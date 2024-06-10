@@ -1,5 +1,7 @@
--- CREATE EXTENSION pg_buffercache;
-
+```sql
+CREATE EXTENSION pg_buffercache;
+```
+```sql
 CREATE FUNCTION buffercache(rel regclass)
 RETURNS TABLE(
 bufferid integer, relfork text, relblk bigint,
@@ -19,5 +21,7 @@ FROM pg_buffercache
 WHERE relfilenode = pg_relation_filenode(rel)
 ORDER BY relforknumber, relblocknumber;
 $$ LANGUAGE sql;
-
--- SELECT * FROM buffercache('cacheme');
+```
+```sql
+SELECT * FROM buffercache('cacheme');
+```
