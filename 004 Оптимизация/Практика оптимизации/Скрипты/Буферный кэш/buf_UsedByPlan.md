@@ -1,6 +1,8 @@
 ```sql
 EXPLAIN (analyze, buffers, costs off, timing off, summary off)
--- SELECT * FROM cacheme;
+```
+```sql
+SELECT * FROM cacheme;
 ```
 ```sql
 QUERY PLAN
