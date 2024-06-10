@@ -1,3 +1,5 @@
+-- CREATE EXTENSION pg_buffercache;
+
 CREATE FUNCTION buffercache(rel regclass)
 RETURNS TABLE(
 bufferid integer, relfork text, relblk bigint,
