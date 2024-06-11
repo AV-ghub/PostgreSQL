@@ -38,7 +38,7 @@ vm.swappiness=0
 ```
 $ sudo swapoff -a && sudo swapon -a
 ```
-
+> Применение параметра смотрим на Ubuntu через System Monitor -> Resources
 
 
 
