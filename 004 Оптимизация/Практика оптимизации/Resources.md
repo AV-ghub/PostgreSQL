@@ -1,2 +1,3 @@
 [System Analysis and Tuning Guide](https://documentation.suse.com/sles/15-SP3/html/SLES-all/preface-tuning.html)   
-[Как правильно мерять производительность диска (fio)](https://habr.com/ru/articles/154235/)
+[Как правильно мерять производительность диска (fio)](https://habr.com/ru/articles/154235/)   
+[An explanation of IOPS and latency](https://recoverymonkey.org/2012/07/26/an-explanation-of-iops-and-latency/)
