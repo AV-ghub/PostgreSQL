@@ -15,3 +15,34 @@ Swap IO 2x faster than filesystem IO, swappiness should be
 ```
 
 > At 0 not swap does not initiated.
+
+### Check
+```bash
+# from file
+$ cat /proc/sys/vm/swappiness
+$ sudo sysctl -p
+
+$ sysctl vm.swappiness
+```
+### Set
+```bash
+$ sudo sysctl vm.swappiness=0
+
+# edit the file with the `nano` editor
+$ sudo nano /etc/sysctl.conf
+
+# my custom swappiness setting
+vm.swappiness=0
+```
+> You can also clear your swap by running swapoff -a and then swapon -a as root instead of rebooting to achieve the same effect.
+```
+$ sudo swapoff -a && sudo swapon -a
+```
+
+
+
+
+
+
+
+
