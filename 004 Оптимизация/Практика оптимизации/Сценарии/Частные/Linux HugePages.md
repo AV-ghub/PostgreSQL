@@ -33,3 +33,37 @@ effective_cache_size = '200GB'
 min_wal_size = '1GB'
 wal_compression = 'ON'
 ```
+### HugePages config
+```bash
+AnonHugePages:       0 kB
+ShmemHugePages:      0 kB
+HugePages_Total:     100
+HugePages_Free:      97
+HugePages_Rsvd:      63
+HugePages_Surp:      0
+Hugepagesize:        1048576 kB
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
