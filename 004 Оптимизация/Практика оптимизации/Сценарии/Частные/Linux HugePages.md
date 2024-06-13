@@ -155,9 +155,15 @@ If you want to disable huge pages then add ***transparent_hugepage=never*** at t
 
 </details>
 
+Clearly you can see that the ***performance gain with HugePages increases as the number of clients and the database size increases***, as long as the size remains within the pre-allocated shared buffer.   
+With HugePages set to 1GB, the higher the number of clients, the higher the comparative performance gain.   
+The key observation here is that the ***performance with 1GB*** HugePages improves as the number of clients increases and it eventually ***gives better performance than 2MB HugePages or the standard 4KB page size***.   
+As expected, ***when the database spills over the pre-allocated HugePages, the performance degrades significantly***.   
 
-
-
+### Summary
+One of my key recommendations is that we must ***keep Transparent HugePages off***.    
+You will see the ***biggest performance gains when the database fits into the shared buffer with HugePages enabled***.    
+Deciding on the size of huge page to use requires a bit of trial and error, but this can potentially lead to a significant TPS gain where the database size is large but remains small enough to fit in the shared buffer.
 
 
 
