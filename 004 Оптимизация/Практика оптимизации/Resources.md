@@ -2,3 +2,4 @@
 [Как правильно мерять производительность диска (fio)](https://habr.com/ru/articles/154235/)   
 [An explanation of IOPS and latency](https://recoverymonkey.org/2012/07/26/an-explanation-of-iops-and-latency/)   
 [Утилита fio](https://sysadminium.ru/fio-utility/)
+[Tune Linux Kernel Parameters For PostgreSQL Optimization](https://www.percona.com/blog/tune-linux-kernel-parameters-for-postgresql-optimization/)
