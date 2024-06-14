@@ -62,7 +62,18 @@ select pg_stat_statements_reset();
 ***
 Используются для распараллеливания исполнения запросов - устанавливаем в зависимости от количества ядер ВМ. 
 https://www.postgresql.org/docs/current/when-can-parallel-query-be-used.html    
-https://dataegret.com/2018/04/lets-speed-things-up/ 
+https://dataegret.com/2018/04/lets-speed-things-up/   
+
+<details><summary><h6>Пример конфигурации</h6></summary>
+
+For example, for system with 32 CPU cores and SSDs, a good starting point is: 
+```bash
+max_worker_processes = 12
+max_parallel_workers_per_gather = 4
+max_parallel_workers = 12
+```
+
+</details>
 ***
 ## synchronous_commit 
 ***
