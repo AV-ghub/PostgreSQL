@@ -59,7 +59,7 @@ select pg_stat_statements_reset();
 ## max_worker_processes / max_parallel_workers_per_gather / max_parallel_maintenance_workers/ max_parallel_workers 
 ***
 Используются для распараллеливания исполнения запросов - устанавливаем в зависимости от количества ядер ВМ. 
-https://www.postgresql.org/docs/current/when-can-parallel-query-be-used.html 
+https://www.postgresql.org/docs/current/when-can-parallel-query-be-used.html    
 https://dataegret.com/2018/04/lets-speed-things-up/ 
 ***
 ## synchronous_commit 
