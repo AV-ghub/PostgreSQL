@@ -123,6 +123,30 @@ https://www.opennet.ru/man.shtml?topic=posix_fadvise&category=2&russian=0
 ***
 Ни в коем случае НЕ включать! Падение производительности может достигать 10х+
 
+[PostgreSQL Configurator](https://pgconfigurator.cybertec.at/)
+<details><summary><h6>Примеры конфигурации</h6></summary>
+
+<details><summary><h6>2Gb/1CPU/1Disk/1GbDB</h6></summary>
+</details>  
+<details><summary><h6>2Gb/2CPU/1Disk/1GbDB</h6></summary>
+</details>  
+<details><summary><h6>4Gb/2CPU/1Disk/1GbDB</h6></summary>
+</details>  
+<details><summary><h6>16Gb/4CPU/2Disk/10GbDB</h6></summary>
+</details>  
+<details><summary><h6>32Gb/4CPU/2Disk/100GbDB</h6></summary>
+</details>  
+<details><summary><h6>64Gb/4CPU/2Disk/300GbDB</h6></summary>
+</details>  
+<details><summary><h6>128Gb/8CPU/3Disk/1000GbDB</h6></summary>
+</details>  
+<details><summary><h6>256Gb/8CPU/4Disk/2000GbDB</h6></summary>
+</details>  
+<details><summary><h6>512Gb/16CPU/4Disk/5000GbDB</h6></summary>
+</details>  
+
+</details>
+
 </details>
 
 
