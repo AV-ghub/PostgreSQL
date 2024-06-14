@@ -36,7 +36,7 @@ n+1: vm.dirty_bytes = 26 (и т.п.).
 
 [Tune Linux Kernel Parameters For PostgreSQL Optimization](https://www.percona.com/blog/tune-linux-kernel-parameters-for-postgresql-optimization/)
 
-<details><summary><h5>Пример</h5></summary>
+<details><summary><h5>Kernel Parameters For PostgreSQL Optimization</h5></summary>
 
 ### vm.swappiness
 vm.swappiness is another kernel parameter that can affect the performance of the database. This parameter is used to control the swappiness (swapping pages to and from swap memory into RAM) behavior on a Linux system. The value ranges from 0 to 100. It controls how much memory will be swapped or paged out. Zero means disable swap and 100 means aggressive swapping.
