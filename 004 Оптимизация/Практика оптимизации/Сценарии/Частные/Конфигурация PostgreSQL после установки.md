@@ -76,9 +76,11 @@ max_parallel_workers = 12
 These settings allow to run at least 3 parallel queries concurrently with maximum of 4 workers per query, and to have 20 cores for other, non-parallel queries.    
 > If using background workers max_worker_processes should be increased accordingly.
 
+[Image](https://dataegret.com/wp-content/uploads/2018/04/LL-new.jpg)
+
 </details>
 
-![Uploading image.png…]()
+
 
 ***
 ## synchronous_commit 
