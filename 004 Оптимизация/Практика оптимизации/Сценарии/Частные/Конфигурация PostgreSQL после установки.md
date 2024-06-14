@@ -78,6 +78,8 @@ These settings allow to run at least 3 parallel queries concurrently with maximu
 
 </details>
 
+![Uploading image.png…]()
+
 ***
 ## synchronous_commit 
 ***
