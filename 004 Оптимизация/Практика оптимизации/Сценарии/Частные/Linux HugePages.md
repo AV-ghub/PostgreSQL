@@ -209,6 +209,8 @@ Hugepagesize:       2048 kB
 > Note: The sample value for HugePages used here is very low, which is not a normal value for a big production machine. Please assess the required number of pages for your system and set those accordingly depending on your system’s workload and resources.
 
 </details>
+
+[How to enable hugepages on Linux](https://linuxconfig.org/how-to-enable-hugepages-on-linux)
   
 Clearly you can see that the ***performance gain with HugePages increases as the number of clients and the database size increases***, as long as the size remains within the pre-allocated shared buffer.   
 With HugePages set to 1GB, the higher the number of clients, the higher the comparative performance gain.   
