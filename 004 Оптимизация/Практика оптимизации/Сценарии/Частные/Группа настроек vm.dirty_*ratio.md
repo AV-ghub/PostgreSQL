@@ -4,6 +4,7 @@
 **vm.dirty_bytes** - сколько всего байт можно занять под dirty pages.   
 
 <details><summary><h5>Пример</h5></summary>
+  
 Например у вас выставлен vm.dirty_background_bytes = 10, vm.dirty_bytes = 30, скорость записи на диск 2 байта в секунду, а скорость записи в ОЗУ 5 байт в секунду (все специально такое маленькое, что бы наглядно было понятно что происходит и не путаться в переводе значений из байт в мегабайты, байт в секунду в мегабиты в секунду и т.п.).
 (Сделаем оговорку что dirty pages работает намного сложнее, чем описанно ниже. Он работает со страницами, а не с байтами, он имеет привязку к конкретным файлам и еще куча нюансов. Ниже очень упрощенный вариант объяснения, что бы получить примерное представление о том, что вообще происходит).
 
@@ -30,8 +31,51 @@
 ...
 Энная секунда: (процесс записал все необходимые ему данные): vm.dirty_bytes = 28   
 n+1: vm.dirty_bytes = 26 (и т.п.).
+
 </details>
 
+[Tune Linux Kernel Parameters For PostgreSQL Optimization](https://www.percona.com/blog/tune-linux-kernel-parameters-for-postgresql-optimization/)
+
+<details><summary><h5>Пример</h5></summary>
+
+### vm.swappiness
+vm.swappiness is another kernel parameter that can affect the performance of the database. This parameter is used to control the swappiness (swapping pages to and from swap memory into RAM) behavior on a Linux system. The value ranges from 0 to 100. It controls how much memory will be swapped or paged out. Zero means disable swap and 100 means aggressive swapping.
+
+You may get good performance by setting lower values.
+
+Setting a value of 0 in newer kernels may cause the OOM Killer (out of memory killer process in Linux) to kill the process. Therefore, you can be on the safe side and set the value to 1 if you want to minimize swapping. The default value on a Linux system is 60. A higher value causes the MMU (memory management unit) to utilize more swap space than RAM, whereas a lower value preserves more data/code in memory.
+
+A smaller value is a good bet to improve performance in PostgreSQL.
+
+### vm.overcommit_memory / vm.overcommit_ratio
+Applications acquire memory and free that memory when it is no longer needed. But in some cases, an application acquires too much memory and does not release it.  This can invoke the OOM killer. Here are the possible values for vm.overcommit_memory parameter with a description for each:
+
+Heuristic overcommit, Do it intelligently (default); based kernel heuristics
+Allow overcommit anyway
+Don’t over commit beyond the overcommit ratio.
+Reference: https://www.kernel.org/doc/Documentation/vm/overcommit-accounting
+
+**vm.overcommit_ratio** is the percentage of RAM that is available for overcommitment. A value of 50% on a system with 2 GB of RAM may commit up to 3 GB of RAM.
+
+A value of 2 for vm.overcommit_memory yields better performance for PostgreSQL. This value maximizes RAM utilization by the server process without any significant risk of getting killed by the OOM killer process. An application will be able to overcommit, but only within the overcommit ratio, thus reducing the risk of having OOM killer kill the process. Hence a value to 2 gives better performance than the default 0 value. However, reliability can be improved by ensuring that memory beyond an allowable range is not overcommitted. It avoids the risk of the process being killed by OOM-killer.
+
+On systems without swap, one may experience a problem when vm.overcommit_memory is 2.
+
+https://www.postgresql.org/docs/current/static/kernel-resources.html#LINUX-MEMORY-OVERCOMMIT
+
+### vm.dirty_background_ratio / vm.dirty_background_bytes
+The vm.dirty_background_ratio is the percentage of memory filled with dirty pages that need to be flushed to disk. Flushing is done in the background. The value of this parameter ranges from 0 to 100; however, a value lower than 5 may not be effective and some kernels do not internally support it. The default value is 10 on most Linux systems. You can gain performance for write-intensive operations with a lower ratio, which means that Linux flushes dirty pages in the background.
+
+You need to set a value of vm.dirty_background_bytes depending on your disk speed.
+
+There are no “good” values for these two parameters since both depend on the hardware. However, setting vm.dirty_background_ratio to 5 and vm.dirty_background_bytes to 25% of your disk speed improves performance by up to ~25% in most cases.
+
+### vm.dirty_ratio / dirty_bytes
+This is the same as vm.dirty_background_ratio / dirty_background_bytes except that the flushing is done in the foreground, blocking the application. So vm.dirty_ratio should be higher than vm.dirty_background_ratio. This will ensure that background processes kick in before the foreground processes to avoid blocking the application, as much as possible. You can tune the difference between the two ratios depending on your disk IO load.
+  
+</details>
+
+  
 Dirty page позволяет нам "сгладить" небольший всплекс на запись, за счет того, что данные, которые нужно записать на диск будут временно храниться в памяти.    
 Причем именно кратковременный всплекс, потому что на долговременном всплекске вы забиваете всю память, отведенную под dirty page и после этого скорость записи падает до скорости работы диска.   
 
