@@ -155,6 +155,61 @@ If you want to disable huge pages then add ***transparent_hugepage=never*** at t
 
 </details>
 
+[Tune Linux Kernel Parameters For PostgreSQL Optimization](https://www.percona.com/blog/tune-linux-kernel-parameters-for-postgresql-optimization/)
+
+<details><summary><h5>Huge pages in Linux</h5></summary>
+
+### Huge Pages
+You can easily check the huge page settings and utilization on your Linux box using ***cat /proc/meminfo | grep -i huge*** command.
+### Script to quantify Huge Pages
+```bash
+#!/bin/bash
+pid=`head -1 $PGDATA/postmaster.pid`
+echo "Pid:            $pid"
+peak=`grep ^VmPeak /proc/$pid/status | awk '{ print $2 }'`
+echo "VmPeak:            $peak kB"
+hps=`grep ^Hugepagesize /proc/meminfo | awk '{ print $2 }'`
+echo "Hugepagesize:   $hps kB"
+hp=$((peak/hps))
+echo Set Huge Pages:     $hp
+```
+The recommended huge pages are 88, therefore you should set the value to 88.
+```bash
+sysctl -w vm.nr_hugepages= 88
+```
+Check the huge pages now, you will see no huge page is in use (***HugePages_Free = HugePages_Total***).
+```bash
+$ cat /proc/meminfo | grep -i huge
+AnonHugePages:         0 kB
+ShmemHugePages:        0 kB
+HugePages_Total:      88
+HugePages_Free:       81
+HugePages_Rsvd:       64
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+```
+Now you can see that a very few of the huge pages are used. Let’s now try to add some data into the database.
+```sql
+postgres=# CREATE TABLE foo(a INTEGER);
+CREATE TABLE
+postgres=# INSERT INTO foo VALUES(generate_Series(1,10000000));
+INSERT 0 10000000
+```
+Let’s see if we are now using more huge pages than before.
+```bash
+$ cat /proc/meminfo | grep -i huge
+AnonHugePages:         0 kB
+ShmemHugePages:        0 kB
+HugePages_Total:      88
+HugePages_Free:       18
+HugePages_Rsvd:        1
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+```
+> Note: The sample value for HugePages used here is very low, which is not a normal value for a big production machine. Please assess the required number of pages for your system and set those accordingly depending on your system’s workload and resources.
+
+</details>
+  
 Clearly you can see that the ***performance gain with HugePages increases as the number of clients and the database size increases***, as long as the size remains within the pre-allocated shared buffer.   
 With HugePages set to 1GB, the higher the number of clients, the higher the comparative performance gain.   
 The key observation here is that the ***performance with 1GB*** HugePages improves as the number of clients increases and it eventually ***gives better performance than 2MB HugePages or the standard 4KB page size***.   
