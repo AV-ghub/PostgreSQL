@@ -210,7 +210,8 @@ Hugepagesize:       2048 kB
 
 </details>
 
-[How to enable hugepages on Linux](https://linuxconfig.org/how-to-enable-hugepages-on-linux)
+[How to enable hugepages on Linux](https://linuxconfig.org/how-to-enable-hugepages-on-linux)   
+[Преимущества и недостатки HugePages](https://habr.com/ru/companies/otus/articles/460403/)
   
 Clearly you can see that the ***performance gain with HugePages increases as the number of clients and the database size increases***, as long as the size remains within the pre-allocated shared buffer.   
 With HugePages set to 1GB, the higher the number of clients, the higher the comparative performance gain.   
