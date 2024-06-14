@@ -127,22 +127,580 @@ https://www.opennet.ru/man.shtml?topic=posix_fadvise&category=2&russian=0
 <details><summary><h6>Примеры конфигурации</h6></summary>
 
 <details><summary><h6>2Gb/1CPU/1Disk/1GbDB</h6></summary>
+
+```bash
+# Connectivity
+max_connections = 20
+superuser_reserved_connections = 3
+
+# Memory Settings
+shared_buffers = '512 MB'
+work_mem = '32 MB'
+maintenance_work_mem = '320 MB'
+huge_pages = off
+effective_cache_size = '1 GB'
+effective_io_concurrency = 100 # concurrent IO only really activated if OS supports posix_fadvise function
+random_page_cost = 1.25 # speed of random disk access relative to sequential access (1.0)
+
+# Monitoring
+shared_preload_libraries = 'pg_stat_statements' # per statement resource usage stats
+track_io_timing=on # measure exact block IO times
+track_functions=pl # track execution times of pl-language procedures if any
+
+# Replication
+wal_level = replica # consider using at least 'replica'
+max_wal_senders = 0
+synchronous_commit = on
+
+# Checkpointing:
+checkpoint_timeout = '15 min'
+checkpoint_completion_target = 0.9
+max_wal_size = '1024 MB'
+min_wal_size = '512 MB'
+
+
+# WAL writing
+wal_compression = on
+wal_buffers = -1 # auto-tuned by Postgres till maximum of segment size (16MB by default)
+wal_writer_delay = 200ms
+wal_writer_flush_after = 1MB
+
+
+# Background writer
+bgwriter_delay = 200ms
+bgwriter_lru_maxpages = 100
+bgwriter_lru_multiplier = 2.0
+bgwriter_flush_after = 0
+
+# Parallel queries:
+max_worker_processes = 2
+max_parallel_workers_per_gather = 1
+max_parallel_maintenance_workers = 1
+max_parallel_workers = 2
+parallel_leader_participation = on
+
+# Advanced features
+enable_partitionwise_join = on
+enable_partitionwise_aggregate = on
+jit = on
+max_slot_wal_keep_size = '1000 MB'
+track_wal_io_timing = on
+maintenance_io_concurrency = 100
+wal_recycle = on
+```
+  
 </details>  
 <details><summary><h6>2Gb/2CPU/1Disk/1GbDB</h6></summary>
+
+```bash
+# Connectivity
+max_connections = 20
+superuser_reserved_connections = 3
+
+# Memory Settings
+shared_buffers = '512 MB'
+work_mem = '32 MB'
+maintenance_work_mem = '320 MB'
+huge_pages = off
+effective_cache_size = '1 GB'
+effective_io_concurrency = 100 # concurrent IO only really activated if OS supports posix_fadvise function
+random_page_cost = 1.25 # speed of random disk access relative to sequential access (1.0)
+
+# Monitoring
+shared_preload_libraries = 'pg_stat_statements' # per statement resource usage stats
+track_io_timing=on # measure exact block IO times
+track_functions=pl # track execution times of pl-language procedures if any
+
+# Replication
+wal_level = replica # consider using at least 'replica'
+max_wal_senders = 0
+synchronous_commit = on
+
+# Checkpointing:
+checkpoint_timeout = '15 min'
+checkpoint_completion_target = 0.9
+max_wal_size = '1024 MB'
+min_wal_size = '512 MB'
+
+
+# WAL writing
+wal_compression = on
+wal_buffers = -1 # auto-tuned by Postgres till maximum of segment size (16MB by default)
+wal_writer_delay = 200ms
+wal_writer_flush_after = 1MB
+
+
+# Background writer
+bgwriter_delay = 200ms
+bgwriter_lru_maxpages = 100
+bgwriter_lru_multiplier = 2.0
+bgwriter_flush_after = 0
+
+# Parallel queries:
+max_worker_processes = 2
+max_parallel_workers_per_gather = 1
+max_parallel_maintenance_workers = 1
+max_parallel_workers = 2
+parallel_leader_participation = on
+
+# Advanced features
+enable_partitionwise_join = on
+enable_partitionwise_aggregate = on
+jit = on
+max_slot_wal_keep_size = '1000 MB'
+track_wal_io_timing = on
+maintenance_io_concurrency = 100
+wal_recycle = on
+```
+  
 </details>  
 <details><summary><h6>4Gb/2CPU/1Disk/1GbDB</h6></summary>
+
+```bash
+# Connectivity
+max_connections = 20
+superuser_reserved_connections = 3
+
+# Memory Settings
+shared_buffers = '1024 MB'
+work_mem = '32 MB'
+maintenance_work_mem = '320 MB'
+huge_pages = off
+effective_cache_size = '3 GB'
+effective_io_concurrency = 100 # concurrent IO only really activated if OS supports posix_fadvise function
+random_page_cost = 1.25 # speed of random disk access relative to sequential access (1.0)
+
+# Monitoring
+shared_preload_libraries = 'pg_stat_statements' # per statement resource usage stats
+track_io_timing=on # measure exact block IO times
+track_functions=pl # track execution times of pl-language procedures if any
+
+# Replication
+wal_level = replica # consider using at least 'replica'
+max_wal_senders = 0
+synchronous_commit = on
+
+# Checkpointing:
+checkpoint_timeout = '15 min'
+checkpoint_completion_target = 0.9
+max_wal_size = '1024 MB'
+min_wal_size = '512 MB'
+
+
+# WAL writing
+wal_compression = on
+wal_buffers = -1 # auto-tuned by Postgres till maximum of segment size (16MB by default)
+wal_writer_delay = 200ms
+wal_writer_flush_after = 1MB
+
+
+# Background writer
+bgwriter_delay = 200ms
+bgwriter_lru_maxpages = 100
+bgwriter_lru_multiplier = 2.0
+bgwriter_flush_after = 0
+
+# Parallel queries:
+max_worker_processes = 2
+max_parallel_workers_per_gather = 1
+max_parallel_maintenance_workers = 1
+max_parallel_workers = 2
+parallel_leader_participation = on
+
+# Advanced features
+enable_partitionwise_join = on
+enable_partitionwise_aggregate = on
+jit = on
+max_slot_wal_keep_size = '1000 MB'
+track_wal_io_timing = on
+maintenance_io_concurrency = 100
+wal_recycle = on
+```
+  
 </details>  
 <details><summary><h6>16Gb/4CPU/2Disk/10GbDB</h6></summary>
+
+```bash
+# Connectivity
+max_connections = 100
+superuser_reserved_connections = 3
+
+# Memory Settings
+shared_buffers = '4096 MB'
+work_mem = '32 MB'
+maintenance_work_mem = '320 MB'
+huge_pages = off
+effective_cache_size = '11 GB'
+effective_io_concurrency = 100 # concurrent IO only really activated if OS supports posix_fadvise function
+random_page_cost = 1.25 # speed of random disk access relative to sequential access (1.0)
+
+# Monitoring
+shared_preload_libraries = 'pg_stat_statements' # per statement resource usage stats
+track_io_timing=on # measure exact block IO times
+track_functions=pl # track execution times of pl-language procedures if any
+
+# Replication
+wal_level = replica # consider using at least 'replica'
+max_wal_senders = 0
+synchronous_commit = on
+
+# Checkpointing:
+checkpoint_timeout = '15 min'
+checkpoint_completion_target = 0.9
+max_wal_size = '1024 MB'
+min_wal_size = '512 MB'
+
+
+# WAL writing
+wal_compression = on
+wal_buffers = -1 # auto-tuned by Postgres till maximum of segment size (16MB by default)
+wal_writer_delay = 200ms
+wal_writer_flush_after = 1MB
+
+
+# Background writer
+bgwriter_delay = 200ms
+bgwriter_lru_maxpages = 100
+bgwriter_lru_multiplier = 2.0
+bgwriter_flush_after = 0
+
+# Parallel queries:
+max_worker_processes = 4
+max_parallel_workers_per_gather = 2
+max_parallel_maintenance_workers = 2
+max_parallel_workers = 4
+parallel_leader_participation = on
+
+# Advanced features
+enable_partitionwise_join = on
+enable_partitionwise_aggregate = on
+jit = on
+max_slot_wal_keep_size = '1000 MB'
+track_wal_io_timing = on
+maintenance_io_concurrency = 100
+wal_recycle = on
+```
+  
 </details>  
 <details><summary><h6>32Gb/4CPU/2Disk/100GbDB</h6></summary>
+
+```bash
+# Connectivity
+max_connections = 100
+superuser_reserved_connections = 3
+
+# Memory Settings
+shared_buffers = '8192 MB'
+work_mem = '32 MB'
+maintenance_work_mem = '420 MB'
+huge_pages = try # NB! requires also activation of huge pages via kernel params, see here for more: https://www.postgresql.org/docs/current/static/kernel-resources.html#LINUX-HUGE-PAGES
+effective_cache_size = '22 GB'
+effective_io_concurrency = 100 # concurrent IO only really activated if OS supports posix_fadvise function
+random_page_cost = 1.25 # speed of random disk access relative to sequential access (1.0)
+
+# Monitoring
+shared_preload_libraries = 'pg_stat_statements' # per statement resource usage stats
+track_io_timing=on # measure exact block IO times
+track_functions=pl # track execution times of pl-language procedures if any
+
+# Replication
+wal_level = replica # consider using at least 'replica'
+max_wal_senders = 0
+synchronous_commit = on
+
+# Checkpointing:
+checkpoint_timeout = '15 min'
+checkpoint_completion_target = 0.9
+max_wal_size = '1024 MB'
+min_wal_size = '512 MB'
+
+
+# WAL writing
+wal_compression = on
+wal_buffers = -1 # auto-tuned by Postgres till maximum of segment size (16MB by default)
+wal_writer_delay = 200ms
+wal_writer_flush_after = 1MB
+
+
+# Background writer
+bgwriter_delay = 200ms
+bgwriter_lru_maxpages = 100
+bgwriter_lru_multiplier = 2.0
+bgwriter_flush_after = 0
+
+# Parallel queries:
+max_worker_processes = 4
+max_parallel_workers_per_gather = 2
+max_parallel_maintenance_workers = 2
+max_parallel_workers = 4
+parallel_leader_participation = on
+
+# Advanced features
+enable_partitionwise_join = on
+enable_partitionwise_aggregate = on
+jit = on
+max_slot_wal_keep_size = '1000 MB'
+track_wal_io_timing = on
+maintenance_io_concurrency = 100
+wal_recycle = on
+```
+  
 </details>  
-<details><summary><h6>64Gb/4CPU/2Disk/300GbDB</h6></summary>
+<details><summary><h6>64Gb/4CPU/2Disk/1000GbDB</h6></summary>
+
+```bash
+# Connectivity
+max_connections = 100
+superuser_reserved_connections = 3
+
+# Memory Settings
+shared_buffers = '16384 MB'
+work_mem = '64 MB'
+maintenance_work_mem = '620 MB'
+huge_pages = try # NB! requires also activation of huge pages via kernel params, see here for more: https://www.postgresql.org/docs/current/static/kernel-resources.html#LINUX-HUGE-PAGES
+effective_cache_size = '45 GB'
+effective_io_concurrency = 100 # concurrent IO only really activated if OS supports posix_fadvise function
+random_page_cost = 1.25 # speed of random disk access relative to sequential access (1.0)
+
+# Monitoring
+shared_preload_libraries = 'pg_stat_statements' # per statement resource usage stats
+track_io_timing=on # measure exact block IO times
+track_functions=pl # track execution times of pl-language procedures if any
+
+# Replication
+wal_level = replica # consider using at least 'replica'
+max_wal_senders = 0
+synchronous_commit = on
+
+# Checkpointing:
+checkpoint_timeout = '15 min'
+checkpoint_completion_target = 0.9
+max_wal_size = '10240 MB'
+min_wal_size = '5120 MB'
+
+
+# WAL writing
+wal_compression = on
+wal_buffers = -1 # auto-tuned by Postgres till maximum of segment size (16MB by default)
+wal_writer_delay = 200ms
+wal_writer_flush_after = 1MB
+
+
+# Background writer
+bgwriter_delay = 200ms
+bgwriter_lru_maxpages = 100
+bgwriter_lru_multiplier = 2.0
+bgwriter_flush_after = 0
+
+# Parallel queries:
+max_worker_processes = 4
+max_parallel_workers_per_gather = 2
+max_parallel_maintenance_workers = 2
+max_parallel_workers = 4
+parallel_leader_participation = on
+
+# Advanced features
+enable_partitionwise_join = on
+enable_partitionwise_aggregate = on
+jit = on
+max_slot_wal_keep_size = '1000 MB'
+track_wal_io_timing = on
+maintenance_io_concurrency = 100
+wal_recycle = on
+```
+  
 </details>  
 <details><summary><h6>128Gb/8CPU/3Disk/1000GbDB</h6></summary>
+
+```bash
+# Connectivity
+max_connections = 100
+superuser_reserved_connections = 3
+
+# Memory Settings
+shared_buffers = '32768 MB'
+work_mem = '64 MB'
+maintenance_work_mem = '920 MB'
+huge_pages = try # NB! requires also activation of huge pages via kernel params, see here for more: https://www.postgresql.org/docs/current/static/kernel-resources.html#LINUX-HUGE-PAGES
+effective_cache_size = '90 GB'
+effective_io_concurrency = 200 # concurrent IO only really activated if OS supports posix_fadvise function
+random_page_cost = 1.25 # speed of random disk access relative to sequential access (1.0)
+
+# Monitoring
+shared_preload_libraries = 'pg_stat_statements' # per statement resource usage stats
+track_io_timing=on # measure exact block IO times
+track_functions=pl # track execution times of pl-language procedures if any
+
+# Replication
+wal_level = replica # consider using at least 'replica'
+max_wal_senders = 0
+synchronous_commit = on
+
+# Checkpointing:
+checkpoint_timeout = '15 min'
+checkpoint_completion_target = 0.9
+max_wal_size = '10240 MB'
+min_wal_size = '5120 MB'
+
+
+# WAL writing
+wal_compression = on
+wal_buffers = -1 # auto-tuned by Postgres till maximum of segment size (16MB by default)
+wal_writer_delay = 200ms
+wal_writer_flush_after = 1MB
+
+
+# Background writer
+bgwriter_delay = 200ms
+bgwriter_lru_maxpages = 100
+bgwriter_lru_multiplier = 2.0
+bgwriter_flush_after = 0
+
+# Parallel queries:
+max_worker_processes = 8
+max_parallel_workers_per_gather = 4
+max_parallel_maintenance_workers = 4
+max_parallel_workers = 8
+parallel_leader_participation = on
+
+# Advanced features
+enable_partitionwise_join = on
+enable_partitionwise_aggregate = on
+jit = on
+max_slot_wal_keep_size = '1000 MB'
+track_wal_io_timing = on
+maintenance_io_concurrency = 200
+wal_recycle = on
+```
+  
 </details>  
-<details><summary><h6>256Gb/8CPU/4Disk/2000GbDB</h6></summary>
+<details><summary><h6>256Gb/8CPU/4Disk/1000GbDB</h6></summary>
+
+```bash
+# Connectivity
+max_connections = 100
+superuser_reserved_connections = 3
+
+# Memory Settings
+shared_buffers = '65536 MB'
+work_mem = '128 MB'
+maintenance_work_mem = '1620 MB'
+huge_pages = try # NB! requires also activation of huge pages via kernel params, see here for more: https://www.postgresql.org/docs/current/static/kernel-resources.html#LINUX-HUGE-PAGES
+effective_cache_size = '179 GB'
+effective_io_concurrency = 200 # concurrent IO only really activated if OS supports posix_fadvise function
+random_page_cost = 1.25 # speed of random disk access relative to sequential access (1.0)
+
+# Monitoring
+shared_preload_libraries = 'pg_stat_statements' # per statement resource usage stats
+track_io_timing=on # measure exact block IO times
+track_functions=pl # track execution times of pl-language procedures if any
+
+# Replication
+wal_level = replica # consider using at least 'replica'
+max_wal_senders = 0
+synchronous_commit = on
+
+# Checkpointing:
+checkpoint_timeout = '15 min'
+checkpoint_completion_target = 0.9
+max_wal_size = '10240 MB'
+min_wal_size = '5120 MB'
+
+
+# WAL writing
+wal_compression = on
+wal_buffers = -1 # auto-tuned by Postgres till maximum of segment size (16MB by default)
+wal_writer_delay = 200ms
+wal_writer_flush_after = 1MB
+
+
+# Background writer
+bgwriter_delay = 200ms
+bgwriter_lru_maxpages = 100
+bgwriter_lru_multiplier = 2.0
+bgwriter_flush_after = 0
+
+# Parallel queries:
+max_worker_processes = 8
+max_parallel_workers_per_gather = 4
+max_parallel_maintenance_workers = 4
+max_parallel_workers = 8
+parallel_leader_participation = on
+
+# Advanced features
+enable_partitionwise_join = on
+enable_partitionwise_aggregate = on
+jit = on
+max_slot_wal_keep_size = '1000 MB'
+track_wal_io_timing = on
+maintenance_io_concurrency = 200
+wal_recycle = on
+```
+  
 </details>  
-<details><summary><h6>512Gb/16CPU/4Disk/5000GbDB</h6></summary>
+<details><summary><h6>512Gb/16CPU/4Disk/10000GbDB</h6></summary>
+
+```bash
+# Connectivity
+max_connections = 300
+superuser_reserved_connections = 3
+
+# Memory Settings
+shared_buffers = '131072 MB'
+work_mem = '256 MB'
+maintenance_work_mem = '2520 MB'
+huge_pages = try # NB! requires also activation of huge pages via kernel params, see here for more: https://www.postgresql.org/docs/current/static/kernel-resources.html#LINUX-HUGE-PAGES
+effective_cache_size = '358 GB'
+effective_io_concurrency = 200 # concurrent IO only really activated if OS supports posix_fadvise function
+random_page_cost = 1.25 # speed of random disk access relative to sequential access (1.0)
+
+# Monitoring
+shared_preload_libraries = 'pg_stat_statements' # per statement resource usage stats
+track_io_timing=on # measure exact block IO times
+track_functions=pl # track execution times of pl-language procedures if any
+
+# Replication
+wal_level = replica # consider using at least 'replica'
+max_wal_senders = 0
+synchronous_commit = on
+
+# Checkpointing:
+checkpoint_timeout = '15 min'
+checkpoint_completion_target = 0.9
+max_wal_size = '32768 MB'
+min_wal_size = '16384 MB'
+
+
+# WAL writing
+wal_compression = on
+wal_buffers = -1 # auto-tuned by Postgres till maximum of segment size (16MB by default)
+wal_writer_delay = 200ms
+wal_writer_flush_after = 1MB
+
+
+# Background writer
+bgwriter_delay = 200ms
+bgwriter_lru_maxpages = 100
+bgwriter_lru_multiplier = 2.0
+bgwriter_flush_after = 0
+
+# Parallel queries:
+max_worker_processes = 16
+max_parallel_workers_per_gather = 8
+max_parallel_maintenance_workers = 8
+max_parallel_workers = 16
+parallel_leader_participation = on
+
+# Advanced features
+enable_partitionwise_join = on
+enable_partitionwise_aggregate = on
+jit = on
+max_slot_wal_keep_size = '1000 MB'
+track_wal_io_timing = on
+maintenance_io_concurrency = 200
+wal_recycle = on
+```
+  
 </details>  
 
 </details>
