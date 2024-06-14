@@ -49,7 +49,8 @@ select pg_stat_statements_reset();
 ***
 ## maintenance_work_mem
 ***
-Определяет максимальное количество ОП для операций типа VACUUM, CREATE INDEX, CREATE FOREIGN KEY. Увеличение этого параметра позволит быстрее выполнять эти операции. Не связано с **work_mem** поэтому можно ставить в разы больше, чем **work_mem**
+Определяет максимальное количество ОП для операций типа VACUUM, CREATE INDEX, CREATE FOREIGN KEY. Увеличение этого параметра позволит быстрее выполнять эти операции. Не связано с **work_mem** поэтому можно ставить в разы больше, чем **work_mem**    
+Рекомендуемые параметры: классический подход в диапазоне от 128 МБ до 1 ГБ и больше, если достаточно оперативной памяти и выполнение обслуживания занимает существенную долю времени.   
 ***
 ## wal_buffers
 ***
@@ -78,9 +79,12 @@ These settings allow to run at least 3 parallel queries concurrently with maximu
 
 ![Background workers](https://github.com/AV-ghub/PostgreSQL/blob/main/999%20Resources/Images/background_workers.png)
 
+#### Рекомендуемые параметры: 
+**max_parallel_workers_per_gather** Если сервер имеет достаточное количество памяти и выполняет запросы с большим объёмом данных, 4 или 8.
+**max_parallel_workers** Значение по умолчанию 8. Если сервер имеет много ядер и большой объём оперативной памяти, можно увеличить до 16 или 32.
+**max_parallel_maintenance_workers** Значение по умолчанию 2. Если выполняется много обслуживания, можно увеличить до 4.
+
 </details>
-
-
 
 ***
 ## synchronous_commit 
