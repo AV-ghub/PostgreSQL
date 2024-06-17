@@ -107,7 +107,8 @@ These settings allow to run at least 3 parallel queries concurrently with maximu
 ***
 ## synchronous_commit 
 ***
-Отключаем синхронную запись журнала изменений данных на диск, что позволяет увеличить скорость ответа СУБД от 10% до 3000+ % за счет подтверждения записи в каждой транзакции. Конечно, при сбое ВМ, мы можем потерять небольшую часть последних изменений.
+Отключаем синхронную запись журнала изменений данных на диск, что позволяет увеличить скорость ответа СУБД от 10% до 3000+ % за счет подтверждения записи в каждой транзакции. Конечно, при сбое ВМ, мы можем потерять небольшую часть последних изменений.   
+If data integrity is less important to you than response times (for example, if you are running a social networking application or processing logs) you can turn this off, making your transaction logs asynchronous.  This ***can result in up to wal_buffers or wal_writer_delay * 2 worth of data*** in an unexpected shutdown, but your database will not be corrupted.  Note that you can also set this on a per-session basis, allowing you to mix “lossy” and “safe” transactions, which is a better approach for most applications.
 ***
 ### min_wal_size и max_wal_size 
 ***
@@ -131,6 +132,12 @@ max_wal_size: Этот параметр устанавливает максим�
 ***
 Необходимо "синхронизировать" два этих параметра. Для этого можно поставить **checkpoint_timeout** в выбранный промежуток, включить параметр **log_checkpoints** и по нему отследить, сколько было записано буферов. После чего подогнать параметр **max_wal_size**
 ***
+## checkpoint_segments
+***
+Sets the maximum distance in log segments between automatic WAL checkpoints.   
+
+For most ***high-volume OTLP databases*** and DW you will want to increase this setting significantly.  Alternately, just wait for checkpoint warnings in the log before increasing it.  Increasing this setting can make recovery in the event of unexpected  ***shutdown take longer***. Maximum disk space required is (checkpoint_segments * 2 + 1) * 8MB,  so make sure you have that much available before setting it.
+***
 ## effective_io_concurrency
 ***
 Задаёт оценку, сколько параллельных асинхронных запросов может выдержать дисковая подсистема. Современные твердотельные накопители 
@@ -140,6 +147,26 @@ https://www.opennet.ru/man.shtml?topic=posix_fadvise&category=2&russian=0
 ## old_snapshot_threshold = -1
 ***
 Ни в коем случае НЕ включать! Падение производительности может достигать 10х+
+***
+## max_fsm_pages
+***
+Sets the maximum number of data pages with free space  which the Postmaster will track.  Setting this ***too low can lead to table bloat and need for VACUUM FULL***.  
+> Should be set to the maximum number of data pages you expect to be updated or deleted between vacuums.
+
+***Increasing this setting may require increasing system kernel parameters***.  Additionally, the recommended formula is based on the default autovacuum settings; if you change the autovacuum parameters, then you may need to adjust this setting to match.  ***Large databases with a lot of historical rows won't require as many FSM pages***.   
+[basic postgresql.conf](https://github.com/AV-ghub/PostgreSQL/blob/main/004%20%D0%9E%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D0%BA%D0%B0%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8/%D0%A1%D1%86%D0%B5%D0%BD%D0%B0%D1%80%D0%B8%D0%B8/%D0%A7%D0%B0%D1%81%D1%82%D0%BD%D1%8B%D0%B5/PostgreSQL%20and%20OS%20tuning%20with%20perf%20tests.md#basic-postgresqlconf)
+***
+## max_fsm_relations
+***
+Sets the maximum number of ***tables and indexes*** for which free space is tracked.    
+The default setting (1000) is plenty for most installations.  If you have an application that requires thousands of tables, however, make sure that this setting is at least ***as high as the total number of tables in all databases plus 20*** per database for system tables.
+***
+## temp_tablespaces
+***
+Sets the tablespace(s) to use for temporary tables and sort files.    
+For applications which create lots of temporary objects, this setting can be used to put the temp space on a faster/separate device, or even a ramdisk.  Because it accepts a list, it can even be used to load balance temp object creation among several tablespaces.
+***
+
 
 [PostgreSQL Configurator](https://pgconfigurator.cybertec.at/)
 <details><summary><h6>Примеры конфигурации</h6></summary>
