@@ -10,6 +10,7 @@
 ***
 ### Memory
 ***
+[GlassFish Server Performance Tuning Guide](https://docs.oracle.com/cd/E26576_01/doc.312/e24936/tuning-os.htm#abeji)
 ```bash
 echo "8589934592" > /proc/sys/kernel/shmmax
 echo "deadline" > /sys/block/sdX/queue/scheduler
