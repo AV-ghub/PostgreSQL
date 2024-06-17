@@ -56,7 +56,9 @@ fdatasync is better with load tables of the pgbench
 ### autovacuum_cost_delay 
 ***
 100
+***
 ### checkpoints_segments 
+***
 256
 ***
 ### max_connections
