@@ -1,5 +1,5 @@
 [Researching PostgreSQL Performance](https://www.pgcon.org/2008/schedule/track/DBA/90.en.html)
-## Пример тюнинга параметров Linux
+## Пример тюнинга параметров PostgreSQL + Linux
 ***
 ### Hardware
 ***
