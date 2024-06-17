@@ -21,7 +21,9 @@ echo "16777216" > /proc/sys/net/core/wmem_default
 echo "16777216" > /proc/sys/net/core/wmem_max
 echo "16777216" > /proc/sys/net/core/rmem_max
 ```
+***
 ### /etc/security/limits.conf
+***
 ```bash
 postgres soft nofile 63536
 postgres soft nproc 2047
