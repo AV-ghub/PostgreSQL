@@ -15,3 +15,47 @@
 Классика 90% чтение 9% insert и 1% update
 
 </details>
+
+<details><summary><h5>Классические варианты бенчмарков для PostgreSQL</h5></summary>
+
+* [pgbench](https://www.postgresql.org/docs/current/pgbench.html)
+* [--Яндекс.Танк]()
+* [--Apache Benchmark]()
+* [--JMeter]()
+* [--sysbench]()
+* [--netperf]()
+
+</details>
+
+<details><summary><h5>Классические утилиты анализа производительности</h5></summary>
+
+* [--top]()
+* [--atop]()
+* [--htop]()
+* [--perf-top]()
+
+</details>
+
+<details><summary><h5>Что измерять?</h5></summary>
+
+* TPS
+* QPS
+* Latency
+* нагрузку на диск/CPU/сеть
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
