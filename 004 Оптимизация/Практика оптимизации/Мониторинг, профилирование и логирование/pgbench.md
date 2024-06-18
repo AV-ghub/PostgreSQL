@@ -21,25 +21,7 @@ pgbench_tellers         10
 pgbench_accounts        100000
 pgbench_history         0
 ```
-<details><summary>Скрипт</summary>
-  
-```sql
-SELECT 
-  pg_class.relname AS table_name,
-  pg_size_pretty(pg_total_relation_size(pg_class.oid)) AS size,
-  pg_total_relation_size(pg_class.oid) / (current_setting('block_size')::integer / 1024) AS num_blocks,
-  pg_stat_user_tables.n_live_tup AS num_rows
-FROM 
-  pg_stat_user_tables 
-JOIN 
-  pg_class ON pg_stat_user_tables.relid = pg_class.oid 
-WHERE 
-  pg_class.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname='public')
-ORDER BY 
-  pg_total_relation_size(pg_class.oid) DESC;
-```
-
-</details>
+[Скрипт](https://github.com/AV-ghub/PostgreSQL/blob/main/001%20%D0%90%D0%B4%D0%BC%D0%B8%D0%BD%D0%B8%D1%81%D1%82%D1%80%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5/010%20%D0%97%D0%B0%D0%B4%D0%B0%D1%87%D0%B8%20%D0%B0%D0%B4%D0%BC%D0%B8%D0%BD%D0%B8%D1%81%D1%82%D1%80%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F/002%20%D0%9F%D0%BE%D0%BB%D0%B5%D0%B7%D0%BD%D1%8B%D0%B5%20%D1%81%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B.md#%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%80%D1%8B-%D1%82%D0%B0%D0%B1%D0%BB%D0%B8%D1%86-%D1%81-%D0%BA%D0%BE%D0%BB%D0%B8%D1%87%D0%B5%D1%81%D1%82%D0%B2%D0%BE%D0%BC-%D1%81%D1%82%D1%80%D0%BE%D0%BA) [Скрипт 2](https://github.com/AV-ghub/PostgreSQL/blob/main/001%20%D0%90%D0%B4%D0%BC%D0%B8%D0%BD%D0%B8%D1%81%D1%82%D1%80%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5/010%20%D0%97%D0%B0%D0%B4%D0%B0%D1%87%D0%B8%20%D0%B0%D0%B4%D0%BC%D0%B8%D0%BD%D0%B8%D1%81%D1%82%D1%80%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F/002%20%D0%9F%D0%BE%D0%BB%D0%B5%D0%B7%D0%BD%D1%8B%D0%B5%20%D1%81%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B.md#%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%80%D1%8B-%D1%82%D0%B0%D0%B1%D0%BB%D0%B8%D1%86-%D1%81-%D0%BA%D0%BE%D0%BB%D0%B8%D1%87%D0%B5%D1%81%D1%82%D0%B2%D0%BE%D0%BC-%D1%81%D1%82%D1%80%D0%BE%D0%BA-2)
 
 Эти числа можно (и в большинстве случаев даже нужно) увеличить, воспользовавшись параметром -s (коэффициент масштаба).    
 При этом также может быть полезен ключ -F (фактор заполнения).
