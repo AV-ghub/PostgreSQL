@@ -18,7 +18,7 @@
 
 <details><summary><h5>Классические варианты бенчмарков для PostgreSQL</h5></summary>
 
-* [pgbench](https://www.postgresql.org/docs/current/pgbench.html)
+* [pgbench](https://www.postgresql.org/docs/current/pgbench.html) [pro](https://postgrespro.ru/docs/postgresql/16/pgbench)
 * [--Яндекс.Танк]()
 * [--Apache Benchmark]()
 * [--JMeter]()
