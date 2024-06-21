@@ -200,11 +200,38 @@ pgbench [ параметры ] имя_базы
 
 Иногда, оценивая производительность одного сервера, полезно запускать несколько экземпляров pgbench параллельно, на отдельных клиентских компьютерах.
 
-#### Примеры
-
+#### Примеры нагрузочного тестирования
+```bash
+sudo su postgres
+```
+##### BaseLine
+```bash
+pgbench postgres
+```
+##### Запуск 10 сеансов по 10 сек каждый с выводом ежесекундного отчета
 ```bash
 pgbench -P 1 -c 10 -T 10 postgres
 ```
+##### Запуск 10 сеансов по 10 сек каждый с созданием 4 рабочих потоков, динамически распределяемых между клиентами, с выводом ежесекундного отчета
+```bash
+pgbench -P 1 -c 10 -j 4 -T 10 postgres
+```
+
+psql
+CREATE DATABASE bm;
+\c bm
+CREATE TABLE t AS 
+SELECT i AS id, random()*100 AS val
+FROM generate_series(1, 10000000) i;
+
+cat > ~/workload.sql << EOL
+\set r random(1, 5000000)
+SELECT id, val 
+FROM t
+WHERE id = :r;
+EOL
+
+pgbench -c 8 -j 4 -T 10 -f ~/workload.sql -U postgres bm
 
 
 
