@@ -216,24 +216,63 @@ pgbench -P 1 -c 10 -T 10 postgres
 ```bash
 pgbench -P 1 -c 10 -j 4 -T 10 postgres
 ```
-
+##### Тестирование на базе скрипта
+Создаем базу и генерим данные
+```sql
 psql
 CREATE DATABASE bm;
 \c bm
 CREATE TABLE t AS 
 SELECT i AS id, random()*100 AS val
 FROM generate_series(1, 10000000) i;
-
+```
+Пишем скрипт для тестирования
+```sql
 cat > ~/workload.sql << EOL
 \set r random(1, 5000000)
 SELECT id, val 
 FROM t
 WHERE id = :r;
 EOL
-
+```
+Пускаем
+```bash
 pgbench -c 8 -j 4 -T 10 -f ~/workload.sql -U postgres bm
+```
+```bash
+transaction type: /var/lib/postgresql/workload.sql
+scaling factor: 1
+query mode: simple
+number of clients: 8
+number of threads: 4
+maximum number of tries: 1
+duration: 10 s
+number of transactions actually processed: 8
+number of failed transactions: 0 (0.000%)
+latency average = 18473.339 ms
+initial connection time = 77.978 ms
+tps = 0.433057 (without initial connection time)
+```
+Печально. Строим соотв индекс на таюличке
+```sql
+create index ix_t on t (id) include (val);
 
-
+```
+Проверяем
+```bash
+transaction type: /var/lib/postgresql/workload.sql
+scaling factor: 1
+query mode: simple
+number of clients: 8
+number of threads: 4
+maximum number of tries: 1
+duration: 10 s
+number of transactions actually processed: 5452
+number of failed transactions: 0 (0.000%)
+latency average = 14.596 ms
+initial connection time = 87.103 ms
+```
+Совсем другое дело
 
 
 
