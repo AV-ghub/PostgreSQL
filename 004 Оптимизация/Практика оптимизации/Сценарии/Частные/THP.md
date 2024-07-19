@@ -7,7 +7,7 @@ THP may be beneficial for various applications, but it certainly ***doesn’t gi
 
 We can safely say that the “myth” is derived from experience and that the rumors are true.
 
-<details><summary>Settling the Myth of Transparent HugePages for Databases</summary>
+<details><summary><H3>Settling the Myth of Transparent HugePages for Databases</H3></summary>
 
 March 6, 2019
 
