@@ -37,7 +37,10 @@ select pg_stat_statements_reset();
 ***
 ## shared_buffers
 ***
-Рекомендуемое значение для данного параметра - 25% от общей оперативной памяти на сервере.     
+Задаёт объём памяти, который будет использовать сервер баз данных для буферов в разделяемой памяти.
+Рекомендуемое значение для данного параметра - 25% от общей оперативной памяти на сервере.   
+Существуют варианты нагрузки, при которых эффективны будут и ещё большие значения shared_buffers, но так как PostgreSQL использует и кеш операционной системы, выделять для shared_buffers более 40% ОЗУ вряд ли будет полезно.  
+При увеличении shared_buffers обычно требуется соответственно увеличить max_wal_size, чтобы растянуть процесс записи большого объёма новых или изменённых данных на более продолжительное время.
 The value for shared_buffers should never be set to reserve all of the system RAM for PostgreSQL.     
 A value over 25% of the system RAM can be useful if, for example, it is set such that the entire database working set of data can fit in cache, as this would greatly reduce the amount of time reading from disk.
 
