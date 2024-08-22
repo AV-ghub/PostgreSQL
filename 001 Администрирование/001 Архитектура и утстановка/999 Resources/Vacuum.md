@@ -1,5 +1,7 @@
-[src](https://edu.postgrespro.ru/dba1-13/dba1_06_arch_vacuum_overview.html)
-<details><summary>Очистка</summary>
+[src](https://edu.postgrespro.ru/dba1-13/dba1_06_arch_vacuum_overview.html)  
+[bloat](https://habr.com/ru/articles/169939/)
+
+<details><summary>Очистка</summary>  
   
 Механизм многоверсионности позволяет эффективно реализовать **изоляцию на основе снимков**,    
 но в результате в табличных страницах  накапливаются **старые версии строк**, а в страницах индексов — **сылки на эти версии**.    
