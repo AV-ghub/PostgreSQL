@@ -1,5 +1,6 @@
 [src](https://edu.postgrespro.ru/dba1-13/dba1_06_arch_vacuum_overview.html)  
 [bloat](https://habr.com/ru/articles/169939/)
+[mvcc](http://momjian.us/main/writings/pgsql/mvcc.pdf)
 
 <details><summary>Очистка</summary>  
   
