@@ -1,8 +1,8 @@
 [src](https://edu.postgrespro.ru/dba1-13/dba1_06_arch_vacuum_overview.html)  
 [bloat](https://habr.com/ru/articles/169939/)  
 [mvcc](http://momjian.us/main/writings/pgsql/mvcc.pdf)  
-[pgcompacttable](https://github.com/dataegret/pgcompacttable)
-[11](https://github.com/AV-ghub/PostgreSQL/blob/main/001%20%D0%90%D0%B4%D0%BC%D0%B8%D0%BD%D0%B8%D1%81%D1%82%D1%80%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5/009%20%D0%A3%D1%82%D0%B8%D0%BB%D0%B8%D1%82%D1%8B%20%D0%B8%20%D1%80%D0%B0%D1%81%D1%88%D0%B8%D1%80%D0%B5%D0%BD%D0%B8%D1%8F/001%20%D0%9E%D1%87%D0%B8%D1%81%D1%82%D0%BA%D0%B0.md)
+[pgcompacttable](https://github.com/dataegret/pgcompacttable)  
+[Альтернативы VACUUM](https://github.com/AV-ghub/PostgreSQL/blob/main/001%20%D0%90%D0%B4%D0%BC%D0%B8%D0%BD%D0%B8%D1%81%D1%82%D1%80%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5/009%20%D0%A3%D1%82%D0%B8%D0%BB%D0%B8%D1%82%D1%8B%20%D0%B8%20%D1%80%D0%B0%D1%81%D1%88%D0%B8%D1%80%D0%B5%D0%BD%D0%B8%D1%8F/001%20%D0%9E%D1%87%D0%B8%D1%81%D1%82%D0%BA%D0%B0.md)
 
 <details><summary>Очистка</summary>  
   
