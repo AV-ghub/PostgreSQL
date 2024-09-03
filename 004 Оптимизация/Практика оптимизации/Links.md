@@ -2,5 +2,8 @@
 
 [1] Аристов Евгений. PostgreSQL 14. Оптимизация, Kubernetes, кластера, облака.   
 [2] Аристов Евгений. PostgreSQL 16: лучшие практики оптимизации.   
+[3] Ibrar Ahmed Gregory Smith PostgreSQL 9.6 High Performance   
+[4] Рогов Е. В. PostgreSQL 15 изнутри.    
+-- old version
 [3] Рогов Е. В. PostgreSQL 15 изнутри.    
 [4] Ibrar Ahmed Gregory Smith PostgreSQL 9.6 High Performance   
