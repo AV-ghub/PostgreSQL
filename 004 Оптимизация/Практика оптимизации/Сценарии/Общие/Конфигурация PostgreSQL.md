@@ -2,3 +2,9 @@
 
 [Пример тюнинга с тестами](https://github.com/AV-ghub/PostgreSQL/blob/main/004%20%D0%9E%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D0%BA%D0%B0%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8/%D0%A1%D1%86%D0%B5%D0%BD%D0%B0%D1%80%D0%B8%D0%B8/%D0%A7%D0%B0%D1%81%D1%82%D0%BD%D1%8B%D0%B5/PostgreSQL%20and%20OS%20tuning%20with%20perf%20tests.md)   
 
+<details><summary><h2>Server Configuration Tuning</h2></summary>
+  
+  [3](https://github.com/AV-ghub/PostgreSQL/blob/main/998%20Books/List.md).[135]
+  
+
+</details>
