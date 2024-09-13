@@ -82,7 +82,28 @@ LOG: received SIGHUP, reloading configuration files
 You can then confirm that your changes have taken place as expected using commands such as **SHOW**, or by looking at **pg_settings**.
 
 ## Database connections
+## Shared memory
+## Logging
+## Vacuuming and ststistics
+## Checkpoins
+## PITR and WAL replication
+### effective_cache_size
+PostgreSQL is expected to have both its own **dedicated memory (shared_buffers)** in addition to utilizing the **filesystem cache**.
+When making decisions, the database compares **the sizes it computes** against the **effective sum of all these caches**;   
+that's what it expects to find in **effective_cache_size**.
 
+The same rough rule of thumb that would **put shared_buffers at 25%** of system memory would set **effective_cache_size to between 50% and 75% of RAM**.   
+To get a more accurate estimate, first observe the size of the filesystem cache: **add the free and cached numbers** shown by the **free** or **top** commands to estimate the filesystem cache size.
+
+~$ free   
+||total|used|free|shared|buff/cache|available|
+|:-|:-|:-|:-|:-|:-|:-|
+|Mem:|$\color{red}{2015880}$|$\color{green}{499164}$|$\color{blue}{244116}$|38172|$\color{blue}{1272600}$|1290600|
+
+~$ top   
+...   
+|MiB Mem :|$\color{red}{1968,6}$ total|$\color{blue}{238,1}$ free|$\color{green}{487,7}$ used|$\color{blue}{1242,8}$ buff/cache|  
+|:-|:-|:-|:-|:-|
 
 
 </details>
