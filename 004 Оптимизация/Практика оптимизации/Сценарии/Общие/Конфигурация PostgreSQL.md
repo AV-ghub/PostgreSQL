@@ -88,6 +88,7 @@ You can then confirm that your changes have taken place as expected using comman
 ## Checkpoins
 ## PITR and WAL replication
 ### effective_cache_size
+[3](https://github.com/AV-ghub/PostgreSQL/blob/main/998%20Books/List.md).[150]
 PostgreSQL is expected to have both its own **dedicated memory (shared_buffers)** in addition to utilizing the **filesystem cache**.
 When making decisions, the database compares **the sizes it computes** against the **effective sum of all these caches**;   
 that's what it expects to find in **effective_cache_size**.
