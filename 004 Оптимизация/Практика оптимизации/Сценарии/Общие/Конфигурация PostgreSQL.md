@@ -118,7 +118,7 @@
   ```
   This provides you with the option of having **different physical commit guarantees** for the different types of data.   
   
-  [src](https://postgrespro.ru/docs/postgresql/16/runtime-config-wal#GUC-SYNCHRONOUS-COMMIT)    
+  [synchronous_commit](https://postgrespro.ru/docs/postgresql/16/runtime-config-wal#GUC-SYNCHRONOUS-COMMIT)    
   [Кэширование](https://postgrespro.ru/docs/postgresql/16/wal-reliability#WAL-RELIABILITY)   
   [pg_test_fsync](https://postgrespro.ru/docs/postgresql/16/pgtestfsync) - подобрать наилучший вариант wal_sync_method для PostgreSQL
   
