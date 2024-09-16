@@ -136,9 +136,9 @@
   A data warehousing report on a giant server might run **with a gigabyte of work_mem** for its larger reports.
 
   The normal **guidance for work_mem** 
-  * consider how much free RAM is around after shared_buffers is allocated (the same OS caching size figure needed to compute effective_cache_size)
-  * divide this figure by max_connections
-  * take a fraction of that figure; 1/2 of that would be an aggressive work_mem value.
+  * consider how much **free RAM** is around after shared_buffers is allocated (the same OS caching size figure needed to compute effective_cache_size)
+  * divide this figure by **max_connections**
+  * take a fraction of that figure; **1/2 of that** would be an aggressive work_mem value.
 
   
 
