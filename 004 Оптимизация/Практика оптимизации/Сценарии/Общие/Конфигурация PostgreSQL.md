@@ -176,6 +176,7 @@
   Such a method is often suggested as a way to force the use of indexes instead of sequential scans.
   Generally, this is a bad idea, and you should **improve the information the query optimizer is working with** so it makes the right decisions instead. 
 
+
   
   
   
