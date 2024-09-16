@@ -170,6 +170,12 @@
   If you're not specifically using that command and 2PC, you can leave this value at its default.   
   **If you are using** those features, only then will you likely need to **increase it to match the number of connections**.
 
+  ### Query enable parameters
+  It's possible to **disable** many of the **query planner's techniques** in the hopes of avoiding a known bad type of query.   
+  This is sometimes used as a **work-around** for the fact that **PostgreSQL doesn't support direct optimizer hints** for how to execute a query.   
+  Such a method is often suggested as a way to force the use of indexes instead of sequential scans.
+  Generally, this is a bad idea, and you should **improve the information the query optimizer is working with** so it makes the right decisions instead. 
+
   
   
   
