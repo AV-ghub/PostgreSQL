@@ -166,7 +166,7 @@
   It is extremely difficult to show any speedup by adjusting them, and quite easy to slow every transaction down by tweaking them.  
 
   ### max_prepared_transactions
-  A prepared transaction is one that uses PREPARE TRANSACTION for** two-phase commit (2PC)**.   
+  A prepared transaction is one that uses PREPARE TRANSACTION for **two-phase commit (2PC)**.   
   If you're not specifically using that command and 2PC, you can leave this value at its default.   
   **If you are using** those features, only then will you likely need to **increase it to match the number of connections**.
 
