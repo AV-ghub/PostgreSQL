@@ -46,13 +46,13 @@
   max_wal_size = (3 * checkpoint_segments) * 16MB
   ```
   
-  10. If you have **server-class hardware** with a battery-backed write cache, **a setting of 32** would be a better default.
+  9. If you have **server-class hardware** with a battery-backed write cache, **a setting of 32** would be a better default.
   
-  11. If you're using a platform where the default **wal_sync_method** is not safe, change it to one that is.
+  10. If you're using a platform where the default **wal_sync_method** is not safe, change it to one that is.
   
-  12. Increase **wal_buffers to 16 MB**.
+  11. Increase **wal_buffers to 16 MB**.
   
-  13. For PostgreSQL versions before 8.4, consider increases to both **default_statistics_target** (to 100, the modern default) and **max_fsm_pages** based on what you know about the database workload.
+  12. For PostgreSQL versions before 8.4, consider increases to both **default_statistics_target** (to 100, the modern default) and **max_fsm_pages** based on what you know about the database workload.
   
   Once you've set up a number of servers running your type of applications, you should have a better idea what sort of **starting values** make sense **to begin with**.   
   The values for **max_wal_size** and **work_mem** in particular **can end up being very different** from what's suggested here.
