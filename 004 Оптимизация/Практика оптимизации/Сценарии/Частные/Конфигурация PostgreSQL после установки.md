@@ -4,13 +4,74 @@
 
 <details><summary><h2>Dedicated server guidelines</h2></summary>
 
+  Initial server tuning can be turned into a fairly mechanical process:
   
+  1. Adjust the **logging** default **to be more verbose**.
+  
+  2. Determine the maximum figure to set **shared_buffers** to. **Start at 25%** of system memory. Consider adjusting upward if you're on a recent PostgreSQL
+  version with spread checkpoints and know your **workload benefits from giving memory directory to the buffer cache**.
+  If you're on a platform where this parameter is not so useful, limit its value or adjust downward accordingly.
+  If your OS is 32 bit, then the shared_buffer value must be less than 2.5 GB, and in case of Windows OS, a larger value won't provide benefits.
+
+  3. Estimate your **maximum connections** generously, since this is a hard limit: clients will be refused connection once it's reached.
+  
+  4. Start the server with these initial parameters. Note how much memory is still available for the OS filesystem cache:
+  ```
+  $ free -m
+  total used free shared buffers cached
+  Mem: 3934 1695 2239 11 89 811
+  -/+ buffers/cache: 793 3141
+  Swap: 4091 0 4091
+  ```
+  ```
+  $ pg_ctl start
+  ```
+  ```
+  $ free -m
+  total used free shared buffers cached
+  Mem: 3934 1705 2229 22 89 822
+  -/+ buffers/cache: 793 3141
+  Swap: 4091 0 4091
+  ```
+
+  5. Adjust **effective_cache_size** based on shared_buffers plus the OS cache. A value between **50% to 75%** of total memory is useful.
+  
+  6. **Divide the OS cache size by max_connections, then by 2**. This gives you an idea of a maximum reasonable setting **for work_mem**. If your application is not
+  dependent on sort performance, a much lower value than that would be more appropriate.
+  
+  7. Set **maintenance_work_mem** to around **50 MB per GB of RAM**: Set **max_wal_size** to **1GB**.
+  
+  8. In older versions, set the value of checkpoint_segments. Here is the formula to calculate max_wal_size:
+  ```
+  max_wal_size = (3 * checkpoint_segments) * 16MB
+  ```
+  
+  10. If you have **server-class hardware** with a battery-backed write cache, **a setting of 32** would be a better default.
+  
+  11. If you're using a platform where the default **wal_sync_method** is not safe, change it to one that is.
+  
+  12. Increase **wal_buffers to 16 MB**.
+  
+  13. For PostgreSQL versions before 8.4, consider increases to both **default_statistics_target** (to 100, the modern default) and **max_fsm_pages** based on what you know about the database workload.
+  
+  Once you've set up a number of servers running your type of applications, you should have a better idea what sort of **starting values** make sense **to begin with**.   
+  The values for **max_wal_size** and **work_mem** in particular **can end up being very different** from what's suggested here.
   
 </details>
 
 <details><summary><h2>Shared server guidelines</h2></summary>
 
+  What you should try to do is use
+  * tuning values for the **memory** - related values on the lower side of recommended practice: Only dedicate **10% of RAM** to shared_buffers at first, even on platforms where
+more would normally be advised
+  * Set **effective_cache_size to 50%** or less of system RAM, perhaps less
+  * if you know your application is going to be using a lot of it Be very stingy about increases to **work_mem**
+  * using **larger values for max_wal_size** and considering the **appropriate choice of wal_sync_method**
+  * Then, simulate your application running with a full-sized workload, and then measure the available RAM to see if more might be suitable to allocate toward the database.
   
+  This may be an iterative process, and it certainly should be matched with application-level benchmarking if possible.   
+  There's no sense in giving memory to the database on a shared system if the application, or another layer of caching, such as at the connection pooler level, would use it more effectively.   
+  That same idea gets reasonable starting settings and tunes iteratively based on monitoring - this works well for a dedicated server too.
   
 </details>
 
