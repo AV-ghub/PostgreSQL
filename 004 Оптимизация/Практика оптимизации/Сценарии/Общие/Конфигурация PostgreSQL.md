@@ -144,8 +144,11 @@
   Lowering this value from its default--for example a reduction from 4.0 to 2.0--was a common technique for making it more likely **that the planner would use indexed queries** instead of the alternative of a sequential scan.   
   This is certainly **not where you want to start tuning at**. You should **prefer getting better statistics and setting the memory parameters** as primary ways to influence the query planner.
 
-  
+  ### constraint_exclusion
+  Допустимые значения constraint_exclusion: on (задействовать ограничения всех таблиц), off (никогда не задействовать ограничения) и partition (задействовать ограничения только для дочерних таблиц и подзапросов UNION ALL). Значение по умолчанию — partition. 
+  Когда данный параметр включен, планировщик сравнивает условия запроса с ограничениями CHECK таблицы и **не сканирует её, если они оказываются за пределами ограничения**.
 
+  
   
 
 
