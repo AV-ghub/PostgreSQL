@@ -140,6 +140,10 @@
   * divide this figure by **max_connections**
   * take a fraction of that figure; **1/2 of that** would be an aggressive work_mem value.
 
+  ### random_page_cost
+  Lowering this value from its default--for example a reduction from 4.0 to 2.0--was a common technique for making it more likely **that the planner would use indexed queries** instead of the alternative of a sequential scan.   
+  This is certainly **not where you want to start tuning at**. You should **prefer getting better statistics and setting the memory parameters** as primary ways to influence the query planner.
+
   
 
   
