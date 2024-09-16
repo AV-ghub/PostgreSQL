@@ -155,7 +155,7 @@
   If you have any sort of server crash when fsync is disabled, it is likely that your database will be corrupted.  
   In most cases where people used to disable fsync it's a better idea to turn off **synchronous_commit** instead.  
   There is one case where fsync=off may still make sense--**Initial bulk loading**.  
-  Some systems will also turn off fsync on servers with redundant copies of the database, for example, slaves used for reporting purposes.
+  Some systems will also turn off fsync on servers with redundant copies of the database, for example, slaves used for **reporting purposes**.
   These **can always resynchronize** against the master if their data gets corrupted.  
   
   ### full_page_writes
