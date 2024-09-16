@@ -158,7 +158,20 @@
   Some systems will also turn off fsync on servers with redundant copies of the database, for example, slaves used for **reporting purposes**.
   These **can always resynchronize** against the master if their data gets corrupted.  
   
-  ### full_page_writes
+  ### full_page_writes 
+  **Increases the odds of database corruption** in return for an increase in performance.
+  You should only consider adjusting this parameter if you're doing **extensive research into your filesystem**.  
+
+  ### commit_delay and commit_siblings
+  It is extremely difficult to show any speedup by adjusting them, and quite easy to slow every transaction down by tweaking them.  
+
+  ### max_prepared_transactions
+  A prepared transaction is one that uses PREPARE TRANSACTION for** two-phase commit (2PC)**.   
+  If you're not specifically using that command and 2PC, you can leave this value at its default.   
+  **If you are using** those features, only then will you likely need to **increase it to match the number of connections**.
+
+  
+  
   
   
 
