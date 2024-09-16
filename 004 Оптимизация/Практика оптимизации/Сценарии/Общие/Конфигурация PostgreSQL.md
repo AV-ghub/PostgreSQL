@@ -44,67 +44,96 @@
    archive_command            | sighup
    archive_library            | sighup
   ```
-* internal: database internals set at compile time.
-* postmaster: full server restart. All shared memory settings fall into this category.
-* sighup: Sending the server a HUP signal.
-* backend: similar to the sighup ones, not impact any already running database backend sessions. Only new sessions started after this will respect the change. 
-* superuser: can be modified by any database superuser, and made active without even requiring a full configuration reload. 
-* user: Individual user sessions can adjust these parameters.
-* superuser-backend: can be changed in the postgresql.conf file without restarting the PostgreSQL server. This value cannot be changed after starting the session, and only the superuser can change these setting.
+  * internal: database internals set at compile time.
+  * postmaster: full server restart. All shared memory settings fall into this category.
+  * sighup: Sending the server a HUP signal.
+  * backend: similar to the sighup ones, not impact any already running database backend sessions. Only new sessions started after this will respect the change. 
+  * superuser: can be modified by any database superuser, and made active without even requiring a full configuration reload. 
+  * user: Individual user sessions can adjust these parameters.
+  * superuser-backend: can be changed in the postgresql.conf file without restarting the PostgreSQL server. This value cannot be changed after starting the session, and only the superuser can change these setting.
+  
+  ### Reloading the configuration file
+  There are three ways you can get the database to reload its configuration in order _**to update values in the sighup category**_.   
+  If you're connected to the database _**as a superuser**_, _**pg_reload_conf**_ will do that:
+  ```
+  postgres=# SELECT pg_reload_conf();
+  pg_reload_conf
+  ----------------
+  t
+  ```
+  You can send a HUP signal manually using the UNIX _**kill command**_:
+  ```
+  $ ps -eaf | grep "postgres -D"
+  postgres 11185 1 0 22:21 pts/0 00:00:00
+  /home/postgres/inst/bin/postgres -D /home/postgres/data/
+  $ kill -HUP 11185
+  ```
+  Finally, you can trigger a SIGHUP signal for the server by using _**pg_ctl**_:
+  ```
+  $ -- pg_ctl reload -- deprecated
+  $ pg_ctlcluster 16 main reload
+  LOG: received SIGHUP, reloading configuration files
+  server signaled
+  ```
+  No matter which approach you use, you'll see the following in the database log files afterwards to confirm that the server received the message:
+  ```
+  LOG: received SIGHUP, reloading configuration files
+  ```
+  You can then confirm that your changes have taken place as expected using commands such as **SHOW**, or by looking at **pg_settings**.
+  
+  ## Database connections
+  ## Shared memory
+  ## Logging
+  ## Vacuuming and ststistics
+  ## Checkpoins
+  ## PITR and WAL replication
+  ### effective_cache_size
+  [3](https://github.com/AV-ghub/PostgreSQL/blob/main/998%20Books/List.md).[150]  
+  PostgreSQL is expected to have both its own **dedicated memory (shared_buffers)** in addition to utilizing the **filesystem cache**.
+  When making decisions, the database compares **the sizes it computes** against the **effective sum of all these caches**;   
+  that's what it expects to find in **effective_cache_size**.
+  
+  The same rough rule of thumb that would **put shared_buffers at 25%** of system memory would set **effective_cache_size to between 50% and 75% of RAM**.   
+  To get a more accurate estimate, first observe the size of the filesystem cache: **add the free and cached numbers** shown by the **free** or **top** commands to estimate the filesystem cache size.
+  
+  ~$ free   
+  ||total|used|free|shared|buff/cache|available|
+  |:-|:-|:-|:-|:-|:-|:-|
+  |Mem:|$\color{red}{2015880}$|$\color{green}{499164}$|$\color{blue}{244116}$|38172|$\color{blue}{1272600}$|1290600|
+  
+  ~$ top   
+  ...   
+  |MiB Mem :|$\color{red}{1968,6}$ total|$\color{blue}{238,1}$ free|$\color{green}{487,7}$ used|$\color{blue}{1242,8}$ buff/cache|  
+  |:-|:-|:-|:-|:-|
+  
+  ### synchronous_commit
+  > Определяет, после завершения какого уровня обработки WAL сервер будет сообщать об успешном выполнении операции. 
+  
+  Physical disk commits stressed as a likely bottleneck for committing transactions.  
+  If you need better commit speed, you could disable **synchronous_commit**.   
+  Groups commits into chunks at a frequency determined by the related **wal_writer_delay** parameter. The **default** settings guarantee a real commit to disk at most **600 milliseconds** after the client commit. That data will not be recovered.   
+  That's possible to turn this parameter off for a single client during its session:
+  ```
+  SET LOCAL synchronous_commit TO OFF;
+  ```
+  This provides you with the option of having **different physical commit guarantees** for the different types of data.   
+  
+  [src](https://postgrespro.ru/docs/postgresql/16/runtime-config-wal#GUC-SYNCHRONOUS-COMMIT)    
+  [Кэширование](https://postgrespro.ru/docs/postgresql/16/wal-reliability#WAL-RELIABILITY)   
+  [pg_test_fsync](https://postgrespro.ru/docs/postgresql/16/pgtestfsync) - подобрать наилучший вариант wal_sync_method для PostgreSQL
+  
+  To get disk cache params
+  ```
+  $ sudo hdparm -I /dev/sda1
+  ```
+  > кеширование записи включено, если за строкой Write cache следует *.
+  > Вы можете протестировать надёжность поведения подсистемы ввода/вывода, используя **diskchecker.pl**.
 
-### Reloading the configuration file
-There are three ways you can get the database to reload its configuration in order _**to update values in the sighup category**_.   
-If you're connected to the database _**as a superuser**_, _**pg_reload_conf**_ will do that:
-```
-postgres=# SELECT pg_reload_conf();
-pg_reload_conf
-----------------
-t
-```
-You can send a HUP signal manually using the UNIX _**kill command**_:
-```
-$ ps -eaf | grep "postgres -D"
-postgres 11185 1 0 22:21 pts/0 00:00:00
-/home/postgres/inst/bin/postgres -D /home/postgres/data/
-$ kill -HUP 11185
-```
-Finally, you can trigger a SIGHUP signal for the server by using _**pg_ctl**_:
-```
-$ -- pg_ctl reload -- deprecated
-$ pg_ctlcluster 16 main reload
-LOG: received SIGHUP, reloading configuration files
-server signaled
-```
-No matter which approach you use, you'll see the following in the database log files afterwards to confirm that the server received the message:
-```
-LOG: received SIGHUP, reloading configuration files
-```
-You can then confirm that your changes have taken place as expected using commands such as **SHOW**, or by looking at **pg_settings**.
+  
 
-## Database connections
-## Shared memory
-## Logging
-## Vacuuming and ststistics
-## Checkpoins
-## PITR and WAL replication
-### effective_cache_size
-[3](https://github.com/AV-ghub/PostgreSQL/blob/main/998%20Books/List.md).[150]  
-PostgreSQL is expected to have both its own **dedicated memory (shared_buffers)** in addition to utilizing the **filesystem cache**.
-When making decisions, the database compares **the sizes it computes** against the **effective sum of all these caches**;   
-that's what it expects to find in **effective_cache_size**.
+  
 
-The same rough rule of thumb that would **put shared_buffers at 25%** of system memory would set **effective_cache_size to between 50% and 75% of RAM**.   
-To get a more accurate estimate, first observe the size of the filesystem cache: **add the free and cached numbers** shown by the **free** or **top** commands to estimate the filesystem cache size.
 
-~$ free   
-||total|used|free|shared|buff/cache|available|
-|:-|:-|:-|:-|:-|:-|:-|
-|Mem:|$\color{red}{2015880}$|$\color{green}{499164}$|$\color{blue}{244116}$|38172|$\color{blue}{1272600}$|1290600|
-
-~$ top   
-...   
-|MiB Mem :|$\color{red}{1968,6}$ total|$\color{blue}{238,1}$ free|$\color{green}{487,7}$ used|$\color{blue}{1242,8}$ buff/cache|  
-|:-|:-|:-|:-|:-|
 
 
 </details>
