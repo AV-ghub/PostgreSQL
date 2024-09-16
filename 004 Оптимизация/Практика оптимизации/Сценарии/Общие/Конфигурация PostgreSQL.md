@@ -148,6 +148,17 @@
   Допустимые значения constraint_exclusion: on (задействовать ограничения всех таблиц), off (никогда не задействовать ограничения) и partition (задействовать ограничения только для дочерних таблиц и подзапросов UNION ALL). Значение по умолчанию — partition. 
   Когда данный параметр включен, планировщик сравнивает условия запроса с ограничениями CHECK таблицы и **не сканирует её, если они оказываются за пределами ограничения**.
 
+  ## Tunables to avoid
+  ### fsync
+  Ignore crash recovery altogether.  
+  Makes the value for wal_sync_method irrelevant.  
+  If you have any sort of server crash when fsync is disabled, it is likely that your database will be corrupted.  
+  In most cases where people used to disable fsync it's a better idea to turn off **synchronous_commit** instead.  
+  There is one case where fsync=off may still make sense--**Initial bulk loading**.  
+  Some systems will also turn off fsync on servers with redundant copies of the database, for example, slaves used for reporting purposes.
+  These **can always resynchronize** against the master if their data gets corrupted.  
+  
+  ### full_page_writes
   
   
 
