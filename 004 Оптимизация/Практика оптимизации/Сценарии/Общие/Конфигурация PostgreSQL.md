@@ -129,6 +129,17 @@
   > кеширование записи включено, если за строкой Write cache следует *.
   > Вы можете протестировать надёжность поведения подсистемы ввода/вывода, используя **diskchecker.pl**.
 
+  ### work_mem
+  The database estimates **how much data** is involved and then **compares it to the work_mem** parameter.   
+  If it's larger (and the default is only 1 MB), rather than do that sorting in memory, it will write all the data out and **use a disk-based** sort instead.   
+  A large increase in work_mem can be one of the most effective ways to speed up your server.   
+  A data warehousing report on a giant server might run **with a gigabyte of work_mem** for its larger reports.
+
+  The normal **guidance for work_mem** 
+  * consider how much free RAM is around after shared_buffers is allocated (the same OS caching size figure needed to compute effective_cache_size)
+  * divide this figure by max_connections
+  * take a fraction of that figure; 1/2 of that would be an aggressive work_mem value.
+
   
 
   
