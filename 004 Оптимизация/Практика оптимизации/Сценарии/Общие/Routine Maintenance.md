@@ -31,7 +31,16 @@ commits.
   ```
   
   #### [Регламентная очистка](https://postgrespro.ru/docs/postgresql/16/runtime-config-autovacuum#RUNTIME-CONFIG-AUTOVACUUM)
+
+  One of the things VACUUM does is **push forward the frozen value** once a threshold of transactions have passed, set by the autovacuum setting as [autovacuum_freeze_max_age](https://postgrespro.ru/docs/postgresql/16/runtime-config-autovacuum#GUC-AUTOVACUUM-FREEZE-MAX-AGE). This maintenance is also critical to cleaning up the commit log information stored in the pg_xact directory.  
+  Some transactions **will fall off** the back here, if they have a **transaction ID so old** that it can't be represented relative to the new reference values.   
+  These will have their XID replaced by a special magic value called the FrozenXID. Once that happens, those transactions will appear in the past relative to all active transactions.
   
+  The values for these parameters are set very conservatively by default--things start to be frozen after only **200 million transactions**, even though wraparound isn't a concern until **2 billion**.   
+  One reason for this is to keep the commit log disk space from growing excessively.  
+  At the default value, it should never take up more than **50 MB**, while increasing the free age to its maximum (2 billion) will instead use up **to 500 MB** of space.   
+  If you have large tables where that disk usage is trivial and you don't need to run vacuum regularly in order to reclaim space, **increasing the maximum free age parameters can be helpful** to keep autovacuum from doing more work than it has to in freezing your tables.
+
   Если по какой-либо причине автоочистка не может вычистить старые значения XID из таблицы, система начинает выдавать предупреждающие сообщения, когда самое старое значение XID в базе данных оказывается в **сорока миллионах транзакций** от точки зацикливания.   
   Если эти предупреждения игнорировать, система отключится и не будет начинать никаких транзакций, как только до точки зацикливания останется **менее трёх миллионов транзакций**.   
   В этом состоянии любые уже выполняемые транзакции могут продолжаться, но могут быть запущены лишь транзакции только для чтения.   
