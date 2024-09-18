@@ -80,6 +80,8 @@ commits.
  
 #### [System Information Functions and Operators](https://www.postgresql.org/docs/current/functions-info.html)
 
+### Vacuum
+
 </details>
 
 
