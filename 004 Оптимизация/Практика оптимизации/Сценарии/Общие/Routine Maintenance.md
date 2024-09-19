@@ -78,9 +78,73 @@ commits.
 
   > При частом выполнении таких команд, как **ANALYZE**, которые затребуют блокировки, конфликтующие с SHARE UPDATE EXCLUSIVE, может получиться так, что **автоочистка не будет успевать завершаться** в принципе.
  
-#### [System Information Functions and Operators](https://www.postgresql.org/docs/current/functions-info.html)
+  #### [System Information Functions and Operators](https://www.postgresql.org/docs/current/functions-info.html)
 
-### Vacuum
+  ### Vacuum
+  
+  **Cleaning up** after all these situations that produce dead rows (UPDATE, DELETE, ROLLBACK) is the job for an operation named **vacuuming**.  
+  Each database **row** includes **status flags** called hint bits that track whether the transaction that updated the xmin or xmax values is known to be committed or aborted.  
+  > The actual commit logs (**pg_xact** and sometimes pg_subtrans) are **consulted** to confirm the hint bits' transaction states.
+
+  Vacuum does a scan of each table and index, looking for rows that can **no longer be visible**.   
+  Once the **free space map** for a table has entries on it, **new allocations** for this table will **reuse that existing space** when possible, **rather than allocating new** space from the operating system.   
+  In most situations, vacuum will **never release disk space**.   
+  A **large deletion** of historical data is one way to **end up with** a table with **lots of free space at its beginning**.   
+
+  PostgreSQL 9.0 has introduced a rewritten VACUUM FULL command that is modeled on the [CLUSTER](https://postgrespro.ru/docs/postgresql/16/sql-cluster) implementation of earlier versions.   
+  
+  Sometimes the transaction takes too long and holds the tuples for a very long time.   
+  Configuration parameter [old_snapshot_threshold](https://postgrespro.ru/docs/postgresql/16/runtime-config-resource#GUC-OLD-SNAPSHOT-THRESHOLD) can be configured to specify **how long this snapshot is valid** for.   
+  After that time, the dead tuple is a candidate for deletion, and if the transaction uses that tuple, it **gets an error**.
+
+  #### HOT
+  One of the major performance features added to PostgreSQL 8.3 is HOT (**Heap Only Tuples**).   
+  HOT allows the reuse of space left behind by dead rows resulting from the DELETE or UPDATE operations under some common conditions.   
+  The specific case that HOT helps with is when you are making **changes to a row that does not update any of its indexed columns**.
+
+  The normal way to check if you are getting the benefit of HOT updates is to monitor [pg_stat_user_tables](https://postgrespro.ru/docs/postgresql/16/monitoring-stats) ([pg_stat_all_tables](https://postgrespro.ru/docs/postgresql/16/monitoring-stats#MONITORING-PG-STAT-ALL-TABLES-VIEW)) and compare the counts for **n_tup_upd** (regular updates) versus **n_tup_hot_upd**.
+
+  One of the ways to **make HOT more effective** on your tables is to **use a larger fill factor** setting when creating them.   
+
+  #### Cost-based vacuuming
+  A manual vacuum worker will execute until it has **exceeded vacuum_cost_limit** of the estimated I/O, **defaulting to 200 units** of work.   
+  At that point, it will then **sleep for vacuum_cost_delay milliseconds**, defaulting to 0--**which disables the cost delay feature** altogether with manually executed VACUUM statements.   
+  Autovacuum workers have their own parameters that work the same way.   
+  **autovacuum_vacuum_cost_limit** defaults to -1, which is shorthand for saying that they use the same cost limit structure as manual vacuum.   
+  The main way that autovacuum diverges from a manual one is it defaults to the following cost delay:
+  ```
+  autovacuum_vacuum_cost_delay = 20ms
+  ```
+
+  If you want to **adjust a manual VACUUM** to run with the cost logic, you can tweak it before issuing any manual vacuum and it will effectively limit its impact for **just that session**:
+  ```
+  postgres=# SET vacuum_cost_delay='20';
+  postgres=# show vacuum_cost_delay;
+  vacuum_cost_delay
+  -------------------
+  20ms
+  ```
+
+  #### Autovacuum logging
+  It's possible to watch it more directly by setting [log_min_messages](https://postgrespro.ru/docs/postgresql/16/runtime-config-logging#GUC-LOG-MIN-MESSAGES):
+  ```
+  log_min_messages =debug2
+  ```
+  You can monitor the daemon's activity by setting [log_autovacuum_min_duration](https://postgrespro.ru/docs/postgresql/16/runtime-config-logging#GUC-LOG-AUTOVACUUM-MIN-DURATION) to some number of milliseconds.   
+  It defaults to -1, turning logging off. 
+  Setting this to a moderate number of milliseconds (for example 1000=1 second) is a good practice to follow.   
+
+  The best way to approach making sure autovacuum is doing what it should is to monitor what tables it's worked on instead:
+  ```
+  SELECT schemaname,relname,last_autovacuum,last_autoanalyze
+  FROM pg_stat_all_tables;
+  ```
+
+  [Tuning Autovacuum in PostgreSQL and Autovacuum Internals](https://www.percona.com/blog/tuning-autovacuum-in-postgresql-and-autovacuum-internals/)
+  
+  
+
+
 
 </details>
 
