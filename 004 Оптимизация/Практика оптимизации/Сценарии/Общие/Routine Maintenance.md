@@ -125,6 +125,7 @@ commits.
   20ms
   ```
 
+  ### Autovacuum
   #### Autovacuum logging
   It's possible to watch it more directly by setting [log_min_messages](https://postgrespro.ru/docs/postgresql/16/runtime-config-logging#GUC-LOG-MIN-MESSAGES):
   ```
@@ -139,12 +140,57 @@ commits.
   SELECT schemaname,relname,last_autovacuum,last_autoanalyze
   FROM pg_stat_all_tables;
   ```
+  #### [Tuning Autovacuum in PostgreSQL and Autovacuum Internals](https://www.percona.com/blog/tuning-autovacuum-in-postgresql-and-autovacuum-internals/)
+  Autovacuum is one of the background utility processes that starts automatically when you start PostgreSQL
+  ```
+  $ps -eaf | egrep "/post|autovacuum"
+  ```
+  We also need ANALYZE on the table that updates the table statistics, so that the optimizer can choose optimal execution plans for an SQL statement.    
+  It is the **autovacuum** in postgres that is responsible for performing **both vacuum and analyze** on tables.   
+  There exists another background process in postgres called **Stats Collector** that tracks the usage and activity information.
 
-  [Tuning Autovacuum in PostgreSQL and Autovacuum Internals](https://www.percona.com/blog/tuning-autovacuum-in-postgresql-and-autovacuum-internals/)
+  Parameters needed to enable autovacuum in PostgreSQL are :
+  ``` shell
+  autovacuum = on  # ( ON by default )
+  track_counts = on # ( ON by default )
+  ```
+  track_counts  is used by the stats collector. 
   
+  ##### Logging autovacuum
+  Set the parameter log_autovacuum_min_duration
+  ```
+  # Setting this parameter to 0 logs every autovacuum to the log file.
+  log_autovacuum_min_duration = '250ms' # Or 1s, 1min, 1h, 1d
+  ```
+  The formula for calculating the effective table level autovacuum threshold is :
+  ```Shell
+  Autovacuum VACUUM thresold for a table = autovacuum_vacuum_scale_factor * number of tuples + autovacuum_vacuum_threshold
+  ```
+  * autovacuum_vacuum_scale_factor Or autovacuum_analyze_scale_factor : Fraction of the table records that will be added to the formula. For example, a value of 0.2 equals to 20% of the table records.
+  * autovacuum_vacuum_threshold Or autovacuum_analyze_threshold : Minimum number of obsolete records or dml’s needed to trigger an autovacuum.
   
+  PostgreSQL allows you to configure individual table level autovacuum settings that bypass global settings.
+  ```
+  $psql -d percona
+   
+  percona=# ALTER TABLE scott.employee SET (autovacuum_vacuum_scale_factor = 0, autovacuum_vacuum_threshold = 100);
+  ALTER TABLE
+  ```
+  ##### How do we identify the tables that need their autovacuum settings tuned?
+  You must know the number of inserts/deletes/updates on a table for an interval.   
+  You can also view the postgres catalog view : pg_stat_user_tables to get that information.
+  ```  
+  percona=# SELECT n_tup_ins as "inserts",n_tup_upd as "updates",n_tup_del as "deletes", n_live_tup as "live_tuples", n_dead_tup as "dead_tuples"
+  FROM pg_stat_user_tables
+  WHERE schemaname = 'scott' and relname = 'employee';
+   inserts | updates | deletes | live_tuples | dead_tuples 
+  ---------+---------+---------+-------------+-------------
+        30 |      40 |       9 |          21 |          39
+  ```
+  > Does increasing autovacuum_max_workers alone increase the number of autovacuum processes that can run in parallel?    
+  > **NO** 
 
-
+  
 
 </details>
 
