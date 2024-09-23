@@ -188,8 +188,140 @@ commits.
         30 |      40 |       9 |          21 |          39
   ```
   > Does increasing autovacuum_max_workers alone increase the number of autovacuum processes that can run in parallel?    
-  > **NO** 
+  > **NO**
+ 
+  ## Index
+  [Index Maintenance](https://wiki.postgresql.org/wiki/Index_Maintenance)
+  
+  ### Index bloat
+  Scanning a bloated index takes significantly more memory, disk space, and potentially disk I/O than one that only includes live entries.   
+  Main sources for index bloat:
+  * deletion
+  * long-running transactions (because they block the vacuum procedure)
 
+  [Understanding of Bloat and VACUUM in PostgreSQL](https://www.percona.com/blog/basic-understanding-bloat-vacuum-postgresql-mvcc/)
+  
+  #### Measuring index bloat
+  First way you can monitor how bloated an index is by watching the index size relative to the table size, which is easy to check with this query:
+  ```
+  select nspname, relname, 
+    round(100 * pg_relation_size(indexrelid) / pg_relation_size(indrelid)) / 100 as index_ratio,
+    pg_size_pretty(pg_relation_size(indexrelid)) as index_size,
+    pg_size_pretty(pg_relation_size(indrelid)) as table_size
+  from pg_index I
+    left join pg_class C on c.oid = I.indexrelid
+    left join pg_namespace N on N.oid = C.relnamespace
+  where nspname not in ('pg_catalog', 'information_schema', 'pg_toast') 
+    and C.relkind = 'i'
+    and pg_relation_size(indrelid) > 0
+  ```
+  ### Ways to fix an index bloating 
+  #### Dump and restore
+  The **pg_dump** utility can be used to take a dump of the database, then restore the operation and create the whole schema and reload the data again.  
+  This is an expensive operation.   
+  #### Vacuuming the database/table
+  The VACUUM command reshuffles the rows to ensure that the page is as full as possible, but database file shrinking only happens when there are some 100% empty pages at the end of the file.
+  #### CLUSTER
+  Dumping and restoring the whole database is a very expensive operation. There is another way to reorder the rows using the CLUSTER command.
+  > The CLUSTER command requires enough space, virtually **twice the disk space**, to hold the initial organized copy of the data.
+ 
+  The code is as follows:
+  ```
+  CLUSTER table_name USING index_name
+  ```
+  #### Reindexing
+  The reindex command is required when data is randomly scattered and needs reindexing:
+  ```
+  REINDEX TABLE item;
+  ```
+  ```
+  pgbench=# create table foo(a int, b varchar);
+  pgbench=# create index bar on foo(a);
+  pgbench=# insert into foo values(generate_series(1, 1000000), 'TEXT');
+  
+  pgbench=# select table_len / (1024*1024) table_size, tuple_count total_rows from pgstattuple('bar');
+  
+   table_size | total_rows 
+  ------------+------------
+           21 |    1000000
+  
+  pgbench=# delete from  foo where a > 10000 and a < 100000;
+  
+  pgbench=# select table_len / (1024*1024) table_size, tuple_count total_rows from pgstattuple('bar');
+  
+   table_size | total_rows 
+  ------------+------------
+           21 |    1000000
+  
+  pgbench=# select table_len / (1024*1024) table_size, tuple_count total_rows from pgstattuple('foo');
+   table_size | total_rows 
+  ------------+------------
+           42 |     910001
+  
+  pgbench=# reindex table foo;
+  
+  pgbench=# select table_len / (1024*1024) table_size, tuple_count total_rows from pgstattuple('bar');
+   table_size | total_rows 
+  ------------+------------
+           19 |     910001
+  
+  pgbench=# select table_len / (1024*1024) table_size, tuple_count total_rows from pgstattuple('foo');
+   table_size | total_rows 
+  ------------+------------
+           42 |     910001
+  ```
+  #### Detailed data and index page monitoring
+  There are a few more PostgreSQL contrib modules that provide additional information available:
+  * **pgstattuple**: Maybe you don't trust the running estimates **for dead rows** that the database is showing.
+    Or perhaps you just want to see **how they are distributed**.
+    The module includes functions to give detailed analysis of **both regular row tuple data and index pages**, which lets you dig into trivia, such as exactly how the B-tree indexes on your server were built.
+  * **pg_freespacemap**: This lets you look at each page of a relation (table or index) and see what's in the FSM for them.
+
+  ### Monitoring query logs
+  #### Basic PostgreSQL log setup
+  The default settings in the postgresql.conf setting look like for the main logging setup parameters:
+  ```
+  log_destination = 'stderr'
+  logging_collector = off
+  log_line_prefix = ''
+  log_directory = 'pg_log'
+  log_filename = 'postgresql-%Y-%m-%d_%H%M%S.log'
+  ```
+  It's important to know what all these lines mean before changing them:
+  * **log_destination**: Write server log messages to the standard error output of the process starting the server.    
+  If you started the server manually, these might appear right on your console.
+  If you sent the server output to another spot, either using the pg_ctl -l option or by using command-line redirection, they'll go to the file you specified instead.
+  * **logging_collector**: Set on the logging collector, to capture all the log messages sent to stderr.
+  * **log_line_prefix**: An empty string means don't add anything to the beginning.
+  * **log_directory**: When the logging collector is on, create files in the pg_log directory underneath your database directory (typically $PGDATA).
+  * **log_filename**: Name any files the logging collector creates using date and time information.
+  
+  #### [CSV logging](https://github.com/AV-ghub/PostgreSQL/blob/main/998%20Books/List.md).[3].[193]
+  Another way to avoid multi-line query issues.   
+  
+  To turn on this feature, you need to adjust the log destination and make sure the collector is running:
+  ```
+  log_destination = 'csvlog'
+  logging_collector = on
+  ```
+  The server must be completely restarted after this change for it to take effect.   
+  After this change, the log files saved into the usual directory structure that the collector uses will now end with .csv rather than .log.    
+  If you followed the right documentation for your version to create the postgres_log file, you would import it like this:
+  ```
+  postgres=# COPY postgres_log FROM '/home/postgres/data
+  /pg_log/postgresql-2010-03-28_215404.csv' WITH CSV;
+  ```
+  
+  Having all of the log data in the database allows you to write all sorts of queries to analyze your logs.    
+  Here's a simple example that shows the first and last commit among the logs imported:
+  ```
+  SELECT min(log_time),max(log_time) FROM postgres_log WHERE command_tag='COMMIT';
+  ```
+  You might instead ask at what elapsed time since the start of the session each command happened at:
+  ```
+  SELECT log_time,(log_time - session_start_time) AS elapsed FROM postgres_log WHERE command_tag='COMMIT';
+  ```
+  
   
 
 </details>
