@@ -1,3 +1,5 @@
+Tag: pg_top
+
 <details><summary><h3><a href="https://manpages.ubuntu.com/manpages/focal/man1/pg_top.1.html">pg_top</a></h3></summary>
 
   #### NAME
