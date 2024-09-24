@@ -42,8 +42,17 @@
 
 </details>
 
+<details><summary><h3><a href="https://confluence.speechpro.com/pages/viewpage.action?pageId=165486262">Интернет. Прозрачный прокси-сервер (transparent proxy)</a></h3></summary>
 
+  ```
+  wget --no-check-certificate https://it-repo.speechpro.com/repository/raw-it-public/ca/stc_root.crt
+  wget --no-check-certificate https://it-repo.speechpro.com/repository/raw-it-public/ca/stc_ica.crt
+   
+  sudo cp stc_{root,ica}.crt /etc/pki/ca-trust/source/anchors/
+  sudo update-ca-trust extract
+  ```
 
+</details>
 
 
 
