@@ -144,7 +144,7 @@
 
 </details>
 
-<details><summary><h4>Сеть VMWare</h4>
+<details><summary><h4>Сеть VMWare</h4></summary>
 
   ![](https://github.com/AV-ghub/PostgreSQL/blob/main/006%20Use%20cases/Installation/New%20cloud%20environment/CentOS%20based/Res/%D0%A3%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0%20CentOS%205.jpg)
 
