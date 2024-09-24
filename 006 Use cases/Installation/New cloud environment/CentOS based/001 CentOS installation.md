@@ -100,8 +100,49 @@
 
 </details>
 
+<details><summary><h4><a href="https://github.com/AV-ghub/PostgreSQL-Cloud-Solutions/blob/main/Linux/Ubuntu/001%20Installation.md#change-hostname">change-hostname</a></h4></summary>
 
+  ```
+  :~$ hostname
+  :~$ hostnamectl
+  
+  # with reboot
+  sudo nano /etc/hostname
+  sudo nano /etc/hosts
+  sudo reboot
+  
+  # without reboot
+  sudo hostname new-server-name-here
+  sudo nano /etc/hostname
+  sudo nano /etc/hosts
+  
+  # via hostnamectl
+  hostnamectl set-hostname viveks-laptop
+  sudo nano /etc/hosts
+  ```
 
+</details>
+
+<details><summary><h4><a href="https://github.com/AV-ghub/PostgreSQL-Cloud-Solutions/blob/main/Linux/Ubuntu/001%20Installation.md#renew-dhcp-ip-address">Renew DHCP IP Address</a></h4></summary>
+  
+  ```
+  :~$ ps fax | grep dhclient
+     2574 pts/0    S+     0:00  |       \_ grep --color=auto dhclient
+  
+  :~$ ip addr
+  
+  :~$ sudo dhclient -r
+  
+  :~$ sudo dhclient -v
+  Internet Systems Consortium DHCP Client 4.4.1
+  Copyright 2004-2018 Internet Systems Consortium.
+  All rights reserved.
+  For info, please visit https://www.isc.org/software/dhcp/
+  
+  :~$ ip addr
+  ```
+
+</details>
 
 
 
