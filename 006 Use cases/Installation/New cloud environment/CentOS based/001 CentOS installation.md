@@ -144,9 +144,11 @@
 
 </details>
 
+<details><summary><h4>Сеть VMWare</h4>
 
+  
 
-
+</details>
 
 
 
