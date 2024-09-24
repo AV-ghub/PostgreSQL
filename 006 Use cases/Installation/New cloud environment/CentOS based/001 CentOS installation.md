@@ -1,4 +1,4 @@
-<details><summary><h3><a href="https://github.com/AV-ghub/PostgreSQL-Cloud-Solutions/blob/main/Linux/CentOS/Intro/Installation/001%20Installation.md">Installation</a></h3></summary>
+<details><summary><h4><a href="https://github.com/AV-ghub/PostgreSQL-Cloud-Solutions/blob/main/Linux/CentOS/Intro/Installation/001%20Installation.md">Installation</a></h4></summary>
 
   ### Шаг 2: Создание виртуальной машины для CentOS
 
@@ -42,7 +42,7 @@
 
 </details>
 
-<details><summary><h3><a href="https://confluence.speechpro.com/pages/viewpage.action?pageId=165486262">Интернет. Прозрачный прокси-сервер (transparent proxy)</a></h3></summary>
+<details><summary><h4><a href="https://confluence.speechpro.com/pages/viewpage.action?pageId=165486262">Интернет. Прозрачный прокси-сервер (transparent proxy)</a></h4></summary>
 
   ```
   wget --no-check-certificate https://it-repo.speechpro.com/repository/raw-it-public/ca/stc_root.crt
@@ -54,7 +54,51 @@
 
 </details>
 
+<details><summary><h4><a href="https://serverfault.com/questions/904304/could-not-resolve-host-mirrorlist-centos-org-centos-7">Could not resolve host: mirrorlist.centos.org Centos 7</a></h4></summary>
 
+  
+  From first of July 2024 on CentOS 7, please switch to Vault archive repositories:
+
+  ```
+  sudo nano /etc/yum.repos.d/CentOS-Base.repo
+  ```
+  
+  copy/paste the following and mind your OS version. Change if needed. In this config is version 7.9.2009:
+  
+  ```
+  [base]
+  name=CentOS-$releasever - Base
+  baseurl=http://vault.centos.org/7.9.2009/os/$basearch/
+  gpgcheck=1
+  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+  
+  [updates]
+  name=CentOS-$releasever - Updates
+  baseurl=http://vault.centos.org/7.9.2009/updates/$basearch/
+  gpgcheck=1
+  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+  
+  [extras]
+  name=CentOS-$releasever - Extras
+  baseurl=http://vault.centos.org/7.9.2009/extras/$basearch/
+  gpgcheck=1
+  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+  
+  [centosplus]
+  name=CentOS-$releasever - Plus
+  baseurl=http://vault.centos.org/7.9.2009/centosplus/$basearch/
+  gpgcheck=1
+  enabled=0
+  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+  ```
+
+  If needed, do:
+  
+  ```
+  yum clean all
+  ```
+
+</details>
 
 
 
