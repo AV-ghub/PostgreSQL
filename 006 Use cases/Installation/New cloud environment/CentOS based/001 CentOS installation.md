@@ -365,7 +365,7 @@ $ systemctl enable postgresql-14
 ```
 Далее
 ```
-$ systemctl enable postgresql-14
+$ systemctl status postgresql-14
 ```
 может возвращать ошибки и неопределенные статусы. Делаем
 ```
