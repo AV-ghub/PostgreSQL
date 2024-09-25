@@ -320,11 +320,37 @@ No package postgresql16-libs available.
 
 </details>
 
-<details><summary><h4>PG start/stop</h4></summary>
+<details><summary><h4><a href="https://stackoverflow.com/questions/37861262/create-multiple-postgres-instances-on-same-machine">PG start/stop</a></h4></summary>
 
+#### Create the clusters
+```
+$ initdb -D /path/to/datadb1
+$ initdb -D /path/to/datadb2
+```
+#### Run the instances
+```
+$ pg_ctl -D /path/to/datadb1 -o "-p 5433" -l /path/to/logdb1 start
+$ pg_ctl -D /path/to/datadb2 -o "-p 5434" -l /path/to/logdb2 start
+```
+#### Test streaming
 
+Now you have two instances running on ports 5433 and 5434. Configuration files for them are in data dirs specified by initdb. Tweak them for streaming replication.
+Your default installation remains untouched in port 5432.
 
-
+#### Steps to create New Server Instance on PostgreSQL 9.5
+On command prompt run:
+```
+initdb -D Instance_Directory_path -U username -W
+(prompts for password)
+```
+Once the new Instance Directory is created. Run command prompt as Administrator
+```
+pg_ctl register -N service_name -D Instance_Directory_path -o "-p port_no"
+```
+After the service is registered, start server
+```
+pg_ctl start -D Instance_Directory_path -o "-p port_no"
+```
 
 </details>
 
