@@ -150,7 +150,11 @@
 
 </details>
 
-#### Repo install
+<details><summary><h4>Repo install</h4></summary>
+
+[Общая информация по репозиториям](https://serveradmin.ru/ustanovka-repozitoriya-epel-rpmforge-v-centos/)
+
+Установка репозитория postgres
 ```
 $ sudo yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 $ sudo yum -y repolist
@@ -164,14 +168,157 @@ pgdg14/7/x86_64      PostgreSQL 14 for RHEL / CentOS 7 - x86_64                 
 pgdg15/7/x86_64      PostgreSQL 15 for RHEL / CentOS 7 - x86_64                                                                             613
 updates/x86_64       CentOS-7 - Updates                                                                                                   6,173
 ```
+Можно установить внешний репозиторий [EPEL](https://docs.fedoraproject.org/en-US/epel/)
+```
+# yum -y install epel-release
+
+$ sudo yum repolist
+...
+epel/x86_64           Extra Packages for Enterprise Linux 7 - x86_64
+...
+```
 ```
 $ sudo yum -y update
-
 ```
 
+</details>
 
+<details><summary><h4>Postgres</h4></summary>
 
+#### Базовая установка
+```
+$ sudo yum -y install postgresql postgresql-server postgresql-contrib postgresql-libs
 
+Installed:
+  postgresql.x86_64 0:9.2.24-9.el7_9            postgresql-contrib.x86_64 0:9.2.24-9.el7_9            postgresql-libs.x86_64 0:9.2.24-9.el7_9            postgresql-server.x86_64 0:9.2.24-9.el7_9           
+
+$ pg_
+pg_archivecleanup  pg_config          pg_ctl             pg_dumpall         pg_resetxlog       pg_standby         pg_test_timing     
+pg_basebackup      pg_controldata     pg_dump            pg_receivexlog     pg_restore         pg_test_fsync      
+```
+#### Репозиторий Postgres
+```
+$ sudo yum -y repolist
+repo id           repo name           
+base/x86_64       CentOS-7 - Base     
+extras/x86_64     CentOS-7 - Extras   
+updates/x86_64    CentOS-7 - Updates  
+
+$ sudo yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+
+=========================================================================================================================================================================================
+ Package                                           Arch                                    Version                                      Repository                                       
+=========================================================================================================================================================================================
+Installing:
+ pgdg-redhat-repo                                  noarch                                  42.0-38PGDG                                  /pgdg-redhat-repo-latest.noarch                  
+=========================================================================================================================================================================================
+Installed:
+  pgdg-redhat-repo.noarch 0:42.0-38PGDG                                                                                                                                                  
+
+$ sudo yum -y repolist
+
+repo id               repo name                                             
+base/x86_64           CentOS-7 - Base                                       
+extras/x86_64         CentOS-7 - Extras                                     
+pgdg-common/7/x86_64  PostgreSQL common RPMs for RHEL / CentOS 7 - x86_64   
+pgdg12/7/x86_64       PostgreSQL 12 for RHEL / CentOS 7 - x86_64            
+pgdg13/7/x86_64       PostgreSQL 13 for RHEL / CentOS 7 - x86_64            
+pgdg14/7/x86_64       PostgreSQL 14 for RHEL / CentOS 7 - x86_64            
+pgdg15/7/x86_64       PostgreSQL 15 for RHEL / CentOS 7 - x86_64            
+updates/x86_64        CentOS-7 - Updates                                                                                                   6,173
+
+$ sudo yum -y update
+```
+#### postgresql15-server в RHEL нет для CentOS 7
+```
+$ sudo yum -y install postgresql15-server
+Error: Package: postgresql15-15.8-1PGDG.rhel7.x86_64 (pgdg15)
+           Requires: libzstd >= 1.4.0
+Error: Package: postgresql15-server-15.8-1PGDG.rhel7.x86_64 (pgdg15)
+           Requires: libzstd.so.1()(64bit)
+Error: Package: postgresql15-15.8-1PGDG.rhel7.x86_64 (pgdg15)
+           Requires: libzstd.so.1()(64bit)
+```
+#### postgresql14 находится
+```
+$ sudo yum -y install postgresql14 postgresql14-server postgresql14-contrib postgresql14-libs
+Installed:
+  postgresql14.x86_64 0:14.13-2PGDG.rhel7       postgresql14-contrib.x86_64 0:14.13-2PGDG.rhel7       postgresql14-libs.x86_64 0:14.13-2PGDG.rhel7       postgresql14-server.x86_64 0:14.13-2PGDG.rhel7      
+
+[ bin]$ sudo ./postgresql-14-setup initdb
+
+[anisimov@cspg-dev001 bin]$ sudo systemctl enable --now postgresql-14
+Created symlink from /etc/systemd/system/multi-user.target.wants/postgresql-14.service to /usr/lib/systemd/system/postgresql-14.service.
+
+[ bin]$ sudo su postgres
+bash-4.2$ cd
+bash-4.2$ systemctl status postgresql*
+● postgresql-14.service - PostgreSQL 14 database server
+   Loaded: loaded (/usr/lib/systemd/system/postgresql-14.service; enabled; vendor preset: disabled)
+   Active: active (running) since Wed 2024-09-25 09:04:22 MSK; 1min 32s ago
+     Docs: https://www.postgresql.org/docs/14/static/
+  Process: 28052 ExecStartPre=/usr/pgsql-14/bin/postgresql-14-check-db-dir ${PGDATA} (code=exited, status=0/SUCCESS)
+ Main PID: 28059 (postmaster)
+   CGroup: /system.slice/postgresql-14.service
+           ├─28059 /usr/pgsql-14/bin/postmaster -D /var/lib/pgsql/14/data/
+           ├─28060 postgres: logger 
+           ├─28062 postgres: checkpointer 
+           ├─28063 postgres: background writer 
+           ├─28064 postgres: walwriter 
+           ├─28065 postgres: autovacuum launcher 
+           ├─28066 postgres: stats collector 
+           └─28067 postgres: logical replication launcher 
+
+		   
+bash-4.2$ pg_ctl status -D /var/lib/pgsql/14/data/
+pg_ctl: server is running (PID: 28059)
+/usr/pgsql-14/bin/postgres "-D" "/var/lib/pgsql/14/data/"
+
+bash-4.2$ psql
+psql (14.13)
+Type "help" for help.
+
+postgres=# \l+
+                                                                    List of databases
+   Name    |  Owner   | Encoding |   Collate   |    Ctype    |   Access privileges   |  Size   | Tablespace |                Description                 
+-----------+----------+----------+-------------+-------------+-----------------------+---------+------------+--------------------------------------------
+ postgres  | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 |                       | 8777 kB | pg_default | default administrative connection database
+ template0 | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +| 8625 kB | pg_default | unmodifiable empty database
+           |          |          |             |             | postgres=CTc/postgres |         |            | 
+ template1 | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +| 8625 kB | pg_default | default template for new databases
+           |          |          |             |             | postgres=CTc/postgres |         |            | 
+(3 rows)
+```
+#### Ставим внешний репозиторий
+```
+$ yum -y install epel-release
+Installed:                                                                                                                                                                               
+  epel-release.noarch 0:7-11                                                                                                                                                             
+  
+$ sudo yum -y update
+Updated:
+  epel-release.noarch 0:7-14
+```
+#### postgresql15 ставится
+```
+$ sudo yum -y install postgresql15 postgresql15-server postgresql15-contrib postgresql15-libs
+
+Installed:
+  postgresql15.x86_64 0:15.8-1PGDG.rhel7        postgresql15-contrib.x86_64 0:15.8-1PGDG.rhel7        postgresql15-libs.x86_64 0:15.8-1PGDG.rhel7        postgresql15-server.x86_64 0:15.8-1PGDG.rhel7       
+
+Dependency Installed:
+  libzstd.x86_64 0:1.5.5-1.el7
+```
+#### postgresql16 в CentOS 7 не поддерживается в принципе
+```
+[anisimov@cspg-dev001 ~]$ sudo yum -y install postgresql16 postgresql16-server postgresql16-contrib postgresql16-libs
+No package postgresql16 available.
+No package postgresql16-server available.
+No package postgresql16-contrib available.
+No package postgresql16-libs available.
+```
+
+</details>
 
 
 
