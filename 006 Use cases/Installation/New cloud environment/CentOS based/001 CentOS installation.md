@@ -1,4 +1,4 @@
-<details><summary><h4><a href="https://github.com/AV-ghub/PostgreSQL-Cloud-Solutions/blob/main/Linux/CentOS/Intro/Installation/001%20Installation.md">Installation</a></h4></summary>
+<details><summary><h4><a href="https://github.com/AV-ghub/PostgreSQL-Cloud-Solutions/blob/main/Linux/CentOS/Intro/Installation/001%20Installation.md">CentOS 7 Installation</a></h4></summary>
 
   ### Шаг 2: Создание виртуальной машины для CentOS
 
@@ -100,7 +100,7 @@
 
 </details>
 
-<details><summary><h4><a href="https://github.com/AV-ghub/PostgreSQL-Cloud-Solutions/blob/main/Linux/Ubuntu/001%20Installation.md#change-hostname">change-hostname</a></h4></summary>
+<details><summary><h4><a href="https://github.com/AV-ghub/PostgreSQL-Cloud-Solutions/blob/main/Linux/Ubuntu/001%20Installation.md#change-hostname">Change hostname</a></h4></summary>
 
   ```
   :~$ hostname
@@ -183,7 +183,7 @@ $ sudo yum -y update
 
 </details>
 
-<details><summary><h4>Postgres</h4></summary>
+<details><summary><h4>PG installation</h4></summary>
 
 #### Базовая установка
 ```
@@ -317,6 +317,10 @@ No package postgresql16-server available.
 No package postgresql16-contrib available.
 No package postgresql16-libs available.
 ```
+
+</details>
+
+<details><summary><h4>PG start/stop</h4></summary>
 
 </details>
 
