@@ -322,6 +322,7 @@ No package postgresql16-libs available.
 
 <details><summary><h4><a href="https://stackoverflow.com/questions/37861262/create-multiple-postgres-instances-on-same-machine">PG start/stop</a></h4></summary>
 
+### Теория
 #### Create the clusters
 ```
 $ initdb -D /path/to/datadb1
@@ -350,6 +351,66 @@ pg_ctl register -N service_name -D Instance_Directory_path -o "-p port_no"
 After the service is registered, start server
 ```
 pg_ctl start -D Instance_Directory_path -o "-p port_no"
+```
+
+### Практика
+Все стопаем и правим у всех порты в postgresql.conf (/var/lib/pgsql/(14,15..n)/data)
+Стартуем как описано выше со своего локального pg_ctl, напр:
+```
+$ /usr/pgsql-14/bin/pg_ctl -D /var/lib/pgsql/14/data start
+```
+Енейблим все сервисы
+```
+$ systemctl enable postgresql-14
+```
+Далее
+```
+$ systemctl enable postgresql-14
+```
+может возвращать ошибки и неопределенные статусы. Делаем
+```
+$ sudo reboot
+```
+Проверяем (под sudo su postgres)
+```
+[root@cspg-dev001 bin]# sudo su postgres
+
+bash-4.2$ cd /usr/pgsql-14/bin/
+bash-4.2$ ./pg_ctl status -D /var/lib/pgsql/14/data/
+pg_ctl: server is running (PID: 1315)
+/usr/pgsql-14/bin/postgres "-D" "/var/lib/pgsql/14/data/"
+
+bash-4.2$ ./psql -p 5434
+psql (14.13)
+postgres=# \q
+
+bash-4.2$ systemctl status postgresql-14
+● postgresql-14.service - PostgreSQL 14 database server
+   Loaded: loaded (/usr/lib/systemd/system/postgresql-14.service; enabled; vendor preset: disabled)
+   Active: active (running) since Wed 2024-09-25 15:38:29 MSK; 6min ago
+
+bash-4.2$ /usr/pgsql-15/bin/pg_ctl status -D /var/lib/pgsql/15/data/
+pg_ctl: server is running (PID: 1294)
+/usr/pgsql-15/bin/postgres "-D" "/var/lib/pgsql/15/data/"
+
+bash-4.2$ /usr/bin/pg_ctl status -D /var/lib/pgsql/data/
+pg_ctl: server is running (PID: 1407)
+/usr/bin/postgres "-D" "/var/lib/pgsql/data" "-p" "5432"
+
+bash-4.2$ systemctl status postgresql-15
+● postgresql-15.service - PostgreSQL 15 database server
+   Loaded: loaded (/usr/lib/systemd/system/postgresql-15.service; enabled; vendor preset: disabled)
+   Active: active (running) since Wed 2024-09-25 15:38:29 MSK; 8min ago
+
+bash-4.2$ systemctl status postgresql
+● postgresql.service - PostgreSQL database server
+   Loaded: loaded (/usr/lib/systemd/system/postgresql.service; enabled; vendor preset: disabled)
+   Active: active (running) since Wed 2024-09-25 15:38:30 MSK; 8min ago
+
+bash-4.2$ /usr/pgsql-15/bin/psql -p 5435
+psql (15.8)
+Type "help" for help.
+postgres=# \q
 ```
 
 </details>
