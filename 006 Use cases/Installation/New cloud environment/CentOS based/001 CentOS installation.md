@@ -150,8 +150,24 @@
 
 </details>
 
+#### Repo install
+```
+$ sudo yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+$ sudo yum -y repolist
+epo id    repo name  status
+base/x86_64          CentOS-7 - Base                                                                                                     10,072
+extras/x86_64        CentOS-7 - Extras                                                                                                      526
+pgdg-common/7/x86_64 PostgreSQL common RPMs for RHEL / CentOS 7 - x86_64                                                                    545
+pgdg12/7/x86_64      PostgreSQL 12 for RHEL / CentOS 7 - x86_64                                                                           1,377
+pgdg13/7/x86_64      PostgreSQL 13 for RHEL / CentOS 7 - x86_64                                                                           1,140
+pgdg14/7/x86_64      PostgreSQL 14 for RHEL / CentOS 7 - x86_64                                                                             900
+pgdg15/7/x86_64      PostgreSQL 15 for RHEL / CentOS 7 - x86_64                                                                             613
+updates/x86_64       CentOS-7 - Updates                                                                                                   6,173
+```
+```
+$ sudo yum -y update
 
-
+```
 
 
 
