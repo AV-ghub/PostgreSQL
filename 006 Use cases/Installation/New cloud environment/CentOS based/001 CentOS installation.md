@@ -42,7 +42,7 @@
 
 </details>
 
-<details><summary><h4><a href="https://confluence.speechpro.com/pages/viewpage.action?pageId=165486262">Интернет. Прозрачный прокси-сервер (transparent proxy)</a></h4></summary>
+<details><summary><h4>Интернет. Прозрачный прокси-сервер (transparent proxy)</h4></summary>
 
   ```
   wget --no-check-certificate https://...
