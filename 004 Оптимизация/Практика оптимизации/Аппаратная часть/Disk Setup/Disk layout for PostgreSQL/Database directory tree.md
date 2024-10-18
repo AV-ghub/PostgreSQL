@@ -5,6 +5,6 @@ This data is actively read from, by VACUUM in particular, and files are removed 
 This directory is one of the reasons PostgreSQL **doesn't work very well** if you mount the database in a way that **bypasses the filesystem cache**.   
 **If** reads and writes to the commit logs are **not cached by the operating system**, it will **heavily reduce performance** in several common situations.
 
-* **relocate onto its own disk is pg_xlog**.   
-* **add more tablespaces to split out heavily accessed tables**.   
-* Next up is to **move temporary files**.
+* relocate onto its own disk is **pg_xlog (pg_wal)**.   
+* add more tablespaces to split out **heavily accessed tables**.   
+* move **temporary files**.
