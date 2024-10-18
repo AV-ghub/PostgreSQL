@@ -1,3 +1,4 @@
+[src](https://gist.github.com/rgreenjr/3637525)
 ```
 -- show running queries (pre 9.2)
 SELECT procpid, age(clock_timestamp(), query_start), usename, current_query 
