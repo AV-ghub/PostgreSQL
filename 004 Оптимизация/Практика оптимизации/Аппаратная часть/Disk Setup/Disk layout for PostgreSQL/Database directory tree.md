@@ -7,4 +7,4 @@ This directory is one of the reasons PostgreSQL **doesn't work very well** if yo
 
 * relocate onto its own disk is **pg_xlog (pg_wal)**.   
 * add more tablespaces to split out **heavily accessed tables**.   
-* move **temporary files**.
+* move **[temporary files](https://github.com/AV-ghub/PostgreSQL/blob/main/004%20%D0%9E%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D0%BA%D0%B0%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8/%D0%90%D0%BF%D0%BF%D0%B0%D1%80%D0%B0%D1%82%D0%BD%D0%B0%D1%8F%20%D1%87%D0%B0%D1%81%D1%82%D1%8C/Disk%20Setup/Disk%20layout%20for%20PostgreSQL/Temporary%20files.md)**.
