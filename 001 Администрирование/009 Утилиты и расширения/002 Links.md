@@ -1,4 +1,4 @@
-Tag: pg_top   
+[Ускоряем PostgreSQL с помощью Tuned](https://habr.com/ru/companies/otus/articles/859270/)  
 
 <details><summary><h3><a href="https://manpages.ubuntu.com/manpages/focal/man1/pg_top.1.html">pg_top</a></h3></summary>
 
