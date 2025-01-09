@@ -7,3 +7,5 @@ FROM   generate_series (1,4) g;
 Result:
 foo1234bar
 ```
+[PostgreSQL OVERLAY() function](https://www.w3resource.com/PostgreSQL/overlay-function.php)  
+[]()
