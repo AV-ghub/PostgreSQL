@@ -32,7 +32,7 @@ SELECT pg_size_pretty(pg_total_relation_size('pg_wal')) as total_wal_size;
 ```
 
 ### Полная диагностика слота:
-sql
+```sql
 SELECT 
     slot_name,
     -- Текущая позиция WAL в кластере
@@ -47,6 +47,7 @@ SELECT
     pg_size_pretty(pg_wal_lsn_diff(confirmed_flush_lsn, restart_lsn)) as progress_from_restart
 FROM pg_replication_slots 
 WHERE slot_name = 'flink_cdc_demo_slot';
+```
 
 ## 🎯 Влияние на другие базы при репликации одной базы
 
