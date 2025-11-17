@@ -18,7 +18,13 @@ pg_size_pretty(pg_wal_lsn_diff(restart_lsn, '0/0')) as retained_wal
 pg_size_pretty(pg_wal_lsn_diff(pg_current_wal_lsn(), restart_lsn)) as lag_size
 
 -- итого правильно
-SELECT pg_size_pretty(pg_wal_lsn_diff(pg_current_wal_lsn(), restart_lsn)) as lag_size;
+SELECT 
+    slot_name,
+    database,
+    pg_size_pretty(
+        pg_wal_lsn_diff(pg_current_wal_lsn(), restart_lsn)
+    ) as lag_size
+FROM pg_replication_slots;
 
 -- Риск №2: Нехватка места в pg_wal
 -- Мониторьте свободное место
