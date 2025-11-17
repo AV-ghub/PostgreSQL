@@ -12,6 +12,13 @@
 -- Риск №1: Быстрый рост WAL-файлов
 -- Проверьте текущий размер WAL
 SELECT pg_size_pretty(pg_current_wal_lsn() - '0/0'::pg_lsn);
+-- НЕПРАВИЛЬНО: дает огромные числа
+pg_size_pretty(pg_wal_lsn_diff(restart_lsn, '0/0')) as retained_wal
+-- ПРАВИЛЬНО: текущее отставание
+pg_size_pretty(pg_wal_lsn_diff(pg_current_wal_lsn(), restart_lsn)) as lag_size
+
+-- итого правильно
+SELECT pg_size_pretty(pg_wal_lsn_diff(pg_current_wal_lsn(), restart_lsn)) as lag_size;
 
 -- Риск №2: Нехватка места в pg_wal
 -- Мониторьте свободное место
