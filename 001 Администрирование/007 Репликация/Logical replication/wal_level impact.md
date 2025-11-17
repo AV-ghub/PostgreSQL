@@ -63,6 +63,15 @@ SELECT
     pg_current_wal_lsn(),
     pg_walfile_name(pg_current_wal_lsn())
 ```
+```
+-- Найдем PID процесса, который использует слот
+SELECT * FROM pg_stat_replication\gx
+
+-- ИЛИ посмотрим напрямую в слотах
+SELECT slot_name, active, active_pid, database 
+FROM pg_replication_slots 
+WHERE slot_name = 'flink_cdc_demo_slot';
+```
 
 ## 🎯 Влияние на другие базы при репликации одной базы
 
