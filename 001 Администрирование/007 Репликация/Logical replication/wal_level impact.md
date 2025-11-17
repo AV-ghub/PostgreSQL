@@ -31,6 +31,23 @@ FROM pg_replication_slots;
 SELECT pg_size_pretty(pg_total_relation_size('pg_wal')) as total_wal_size;
 ```
 
+### Полная диагностика слота:
+sql
+SELECT 
+    slot_name,
+    -- Текущая позиция WAL в кластере
+    pg_current_wal_lsn() as current_wal_lsn,
+    -- С какой позиции слот может перезапуститься
+    restart_lsn,
+    -- До какой позиции слот подтвердил получение
+    confirmed_flush_lsn,
+    -- ОТСТАВАНИЕ: насколько слот отстал от текущей позиции
+    pg_size_pretty(pg_wal_lsn_diff(pg_current_wal_lsn(), restart_lsn)) as lag_behind_current,
+    -- ПРОГРЕСС: сколько слот уже подтвердил от своей restart позиции
+    pg_size_pretty(pg_wal_lsn_diff(confirmed_flush_lsn, restart_lsn)) as progress_from_restart
+FROM pg_replication_slots 
+WHERE slot_name = 'flink_cdc_demo_slot';
+
 ## 🎯 Влияние на другие базы при репликации одной базы
 
 **Важно: слот репликации привязан к КОНКРЕТНОЙ БАЗЕ**, но WAL-файлы общие для всего кластера.
