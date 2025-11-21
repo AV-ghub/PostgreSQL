@@ -1,5 +1,16 @@
 # Системное понимание логической репликации PostgreSQL для тонкой настройки интеграции с Flink через Debezium
 
+[Глава 29. Логическая репликация](https://postgrespro.ru/docs/postgresql/current/logical-replication)  
+[Chapter 29. Logical Replication](https://www.postgresql.org/docs/current/logical-replication.html)  
+[Логическая репликация PostgreSQL: инструкция](https://timeweb.cloud/tutorials/postgresql/logicheskaya-replikaciya-postgresql)  
+[Debezium connector for PostgreSQL](https://debezium.io/documentation/reference/stable/connectors/postgresql.html)   
+[Postgres replication lag using debezium connector](https://medium.com/@pawanpg0963/postgres-replication-lag-using-debezium-connector-4ba50e330cd6)   
+[Отладка и устранение проблем в PostgreSQL Streaming Replication](https://habr.com/ru/companies/oleg-bunin/articles/414111/)   
+[Using Stand-by Servers for Postgres Logical Replication](https://www.decodable.co/blog/postgres-logical-replication)  
+[Logical Replication From Postgres 16 Stand-By Servers—Debezium and Failover Slots](https://www.decodable.co/blog/logical-replication-from-postgres-16-stand-by-servers-part-2-of-2)  
+[Глава 48. Отслеживание прогресса репликации](https://postgrespro.ru/docs/postgresql/current/replication-origins)   
+
+
 Это позволяет обойти автоматизацию Debezium и получить полный контроль над процессом.
 
 ### 🗄️ Основы логической репликации в PostgreSQL
