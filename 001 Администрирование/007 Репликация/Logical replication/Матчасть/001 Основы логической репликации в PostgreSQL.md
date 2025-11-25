@@ -2,8 +2,7 @@
 
 [Глава 29. Логическая репликация](https://postgrespro.ru/docs/postgresql/current/logical-replication)  
 [Chapter 29. Logical Replication](https://www.postgresql.org/docs/current/logical-replication.html)  
-[Логическая репликация PostgreSQL: инструкция](https://timeweb.cloud/tutorials/postgresql/logicheskaya-replikaciya-postgresql)  
-> здесь подробно про то как пользоваться pg_dump для инморта схем
+[Логическая репликация PostgreSQL: инструкция](https://timeweb.cloud/tutorials/postgresql/logicheskaya-replikaciya-postgresql)  > здесь подробно про то как пользоваться pg_dump для инморта схем   
 [Debezium connector for PostgreSQL](https://debezium.io/documentation/reference/stable/connectors/postgresql.html)   
 [Postgres replication lag using debezium connector](https://medium.com/@pawanpg0963/postgres-replication-lag-using-debezium-connector-4ba50e330cd6)   
 [Отладка и устранение проблем в PostgreSQL Streaming Replication](https://habr.com/ru/companies/oleg-bunin/articles/414111/)   
