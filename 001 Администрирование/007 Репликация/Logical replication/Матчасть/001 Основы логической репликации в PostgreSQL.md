@@ -12,6 +12,8 @@
 [Using Stand-by Servers for Postgres Logical Replication](https://www.decodable.co/blog/postgres-logical-replication)  
 > ^ Postgres 16 [support logical replication from stand-by servers](https://github.com/AV-ghub/PostgreSQL/blob/main/001%20%D0%90%D0%B4%D0%BC%D0%B8%D0%BD%D0%B8%D1%81%D1%82%D1%80%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5/007%20%D0%A0%D0%B5%D0%BF%D0%BB%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F/Logical%20replication/%D0%9C%D0%B0%D1%82%D1%87%D0%B0%D1%81%D1%82%D1%8C/003%20Using%20Stand-by%20Servers%20for%20Postgres%20Logical%20Replication.md)
 
+[Postgres 16 highlight: Logical decoding on standby](https://bdrouvot.github.io/2023/04/19/postgres-16-highlight-logical-decoding-on-standby/)
+
 [Logical Replication From Postgres 16 Stand-By Servers—Debezium and Failover Slots](https://www.decodable.co/blog/logical-replication-from-postgres-16-stand-by-servers-part-2-of-2)  
 [Глава 48. Отслеживание прогресса репликации](https://postgrespro.ru/docs/postgresql/current/replication-origins)   
 
