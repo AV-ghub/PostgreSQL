@@ -7,6 +7,7 @@
 
 [Debezium connector for PostgreSQL](https://debezium.io/documentation/reference/stable/connectors/postgresql.html)   
 [Postgres replication lag using debezium connector](https://medium.com/@pawanpg0963/postgres-replication-lag-using-debezium-connector-4ba50e330cd6)   
+[Debezium Snapshots Revisited!](https://www.youtube.com/watch?v=Lp0Rg8_nxUs)   
 [Отладка и устранение проблем в PostgreSQL Streaming Replication](https://habr.com/ru/companies/oleg-bunin/articles/414111/)   
 [Using Stand-by Servers for Postgres Logical Replication](https://www.decodable.co/blog/postgres-logical-replication)  
 > ^ Postgres 16 [support logical replication from stand-by servers](https://github.com/AV-ghub/PostgreSQL/blob/main/001%20%D0%90%D0%B4%D0%BC%D0%B8%D0%BD%D0%B8%D1%81%D1%82%D1%80%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5/007%20%D0%A0%D0%B5%D0%BF%D0%BB%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F/Logical%20replication/%D0%9C%D0%B0%D1%82%D1%87%D0%B0%D1%81%D1%82%D1%8C/003%20Using%20Stand-by%20Servers%20for%20Postgres%20Logical%20Replication.md)
