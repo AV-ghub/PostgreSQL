@@ -25,6 +25,8 @@ standby> SELECT * FROM pg_logical_slot_get_changes('demo_slot_standby', NULL, NU
 | 5E/90005188 | 6983 | table public.some_data: INSERT: id[integer]:1 short_text[character varying]:'c4ca4' long_text[text]:'3a3c3274941c83e253ebf8d2438ea5a2' |
 ```
 
+# [Stand-By Logical Replication With Debezium](https://www.decodable.co/blog/logical-replication-from-postgres-16-stand-by-servers-part-2-of-2)
+[Debezium Releases Overview](https://debezium.io/releases/)   
 
 
 
