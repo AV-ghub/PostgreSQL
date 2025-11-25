@@ -9,3 +9,25 @@ While CDC in general **doesn’t require write access** to the database, there a
 
 * In case of Debezium, you **won’t be able to use its incremental snapshotting** implementation, as this requires inserting watermarking events into a signaling table.
 * Also you cannot use the **heartbeat feature**, which lets the connector **update its restart offsets** also in cases where there are no change events for any table the connector is capturing are coming in.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
