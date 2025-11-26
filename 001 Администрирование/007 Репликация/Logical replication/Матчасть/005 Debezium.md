@@ -21,3 +21,40 @@ CREATE ROLE <name> REPLICATION LOGIN;
 In general, it is best to manually create publications for the tables that you want to capture, before you set up the connector.  
 However, you can configure your environment in a way that permits Debezium to create publications automatically, and to specify the data that is added to them. 
 
+### [Snapshots](https://debezium.io/documentation/reference/stable/connectors/postgresql.html#postgresql-snapshots)
+Ad hoc snapshots require the use of signaling tables. You initiate an ad hoc snapshot by sending a signal request to the Debezium signaling table.
+
+#### [Creating a signaling data collection](https://debezium.io/documentation/reference/stable/configuration/signalling.html#debezium-signaling-creating-a-signal-data-collection)
+You create a signaling table by submitting a standard SQL DDL query to the source database.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
