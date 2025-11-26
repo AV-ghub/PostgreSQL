@@ -25,7 +25,7 @@ However, you can configure your environment in a way that permits Debezium to cr
 Ad hoc snapshots require the use of signaling tables. You initiate an ad hoc snapshot by sending a signal request to the Debezium signaling table.
 
 #### [Creating a signaling data collection](https://debezium.io/documentation/reference/stable/configuration/signalling.html#debezium-signaling-creating-a-signal-data-collection)
-You create a signaling table by submitting a standard SQL DDL query to the source database.
+You create a signaling table by submitting a standard SQL DDL **query to the source database**.
 
 
 
