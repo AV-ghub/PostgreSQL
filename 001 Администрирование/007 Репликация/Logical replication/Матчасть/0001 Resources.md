@@ -1,4 +1,4 @@
-# Streamong replication
+# Streaming replication
 [Отладка и устранение проблем в PostgreSQL Streaming Replication](https://habr.com/ru/companies/oleg-bunin/articles/414111/)   
 
 # Logical replication
