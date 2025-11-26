@@ -18,6 +18,11 @@
 [Глава 48. Отслеживание прогресса репликации](https://postgrespro.ru/docs/postgresql/current/replication-origins)   
 
 
+[Flink SQL—Misconfiguration, Misunderstanding, and Mishaps](https://www.decodable.co/blog/flink-sql-misconfiguration-misunderstanding-and-mishaps?utm_medium=github&utm_source=examples_repo&utm_campaign=blog&utm_content=troubleshooting-flinksql)  
+[Decodable Examples](https://github.com/decodableco/examples?tab=readme-ov-file)
+
+
+
 Это позволяет обойти автоматизацию Debezium и получить полный контроль над процессом.
 
 ### 🗄️ Основы логической репликации в PostgreSQL
