@@ -27,6 +27,8 @@ Ad hoc snapshots require the use of signaling tables. You initiate an ad hoc sna
 #### [Creating a signaling data collection](https://debezium.io/documentation/reference/stable/configuration/signalling.html#debezium-signaling-creating-a-signal-data-collection)
 You create a signaling table by submitting a standard SQL DDL **query to the source database**.
 
+When you initiate an ad hoc snapshot of an existing table, the connector appends content to the topic that already exists for the table.  
+If a previously existing topic was removed, Debezium can create a topic automatically if automatic topic creation is enabled.
 
 
 
